@@ -1,1 +1,3 @@
 # invoice-maker
+
+The EasyBill application is designed to help users easily create and manage invoices, send them via email, or download them as PDFs, while seamlessly tracking payment statuses. This application aims to simplify the invoicing process for small businesses, freelancers, and business owners. The intuitive interface offers features such as user registration, login, and comprehensive invoice and client management. With EasyBill, users can quickly create invoices, send them directly to clients, and automatically track payment statuses. Additional tools include custom invoice template design, payment reminders, financial reports, statistical graphs, calendar integration, and the ability to view documents in PDF format.
