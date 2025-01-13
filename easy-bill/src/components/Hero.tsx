@@ -1,6 +1,8 @@
-import Image from "next/image";
+import { Dialog, DialogPanel } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import React from "react";
 
-export default function Home() {
+export default function Hero() {
   return (
     <>
       <div className="bg-white">
@@ -29,11 +31,11 @@ export default function Home() {
             </div>
             <div className="text-center">
               <h1 className="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-              Simplify Your Business with Effortless Invoice Creation
+                Data to enrich your online business
               </h1>
               <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
-              Simplify Your Business is an easy-to-use platform designed to make invoice creation quick and hassle-free. 
-              With its user-friendly interface and smart automation, you can create professional invoices in seconds.
+                Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
+                lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
