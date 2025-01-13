@@ -11,10 +11,10 @@ const Footer: React.FC = () => {
               href="/"
               className="mb-4 text-lg/6 font-semibold text-zinc-900 group-hover:text-zinc-600"
             >
-              ViralFeed
+              EasyBill
             </a>
             <p className="mt-4 text-sm/6 text-zinc-600">
-              Never Miss a Trend: Your Daily Feed of Viral News
+            The Simple Solution to Create and Manage Your Invoices
             </p>
           </div>
           <div className="flex-1">
@@ -37,9 +37,9 @@ const Footer: React.FC = () => {
           <div className="flex-1">
             <p className="font-semibold text-zinc-900 mb-4">Contact</p>
             <p className="mt-4 text-sm/6 text-zinc-600">
-              ViralFeed
+              EasyBill
               <br />
-              cs@viralfeed.com
+              cs@EasyBill.com
             </p>
           </div>
         </div>
