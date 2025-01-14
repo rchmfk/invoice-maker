@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
               EasyBill
             </a>
             <p className="mt-4 text-sm/6 text-zinc-600">
-            Simplify Your Business with Effortless Invoice Creation
+            The Simple Solution to Create and Manage Your Invoices
             </p>
           </div>
           <div className="flex-1">
