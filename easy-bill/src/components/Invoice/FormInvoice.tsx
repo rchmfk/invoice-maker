@@ -94,7 +94,7 @@ const FormInvoice = () => {
           <div className="h-[2px] bg-gray-200 flex-1"></div>
           <div className="flex flex-col items-center text-center opacity-50">
             <div className="flex items-center justify-center w-8 h-8 bg-gray-400 text-white rounded-full">
-              3
+              2
             </div>
             <p className="text-sm text-gray-500 mt-2">Invoice Template</p>
           </div>
