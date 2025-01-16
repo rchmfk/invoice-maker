@@ -1,5 +1,5 @@
-import React from 'react'
-import FormLogin from './FormLogin'
+import React from "react";
+import FormLogin from "./FormLogin";
 
 export default function LoginPage() {
   return (
@@ -7,5 +7,5 @@ export default function LoginPage() {
       <h1>Login page</h1>
       <FormLogin />
     </section>
-  )
+  );
 }
