@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import ProfileCard from "@/components/ProfileCard";
 import ListSection from "@/components/ListSection";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 interface BankAccount {
   name: string;
@@ -87,73 +89,92 @@ const Home: React.FC = () => {
   };
 
   return (
-    <main className="flex-1 p-6">
-      {/* Header */}
-      <header className="flex justify-between items-center mb-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Profile</h1>
+    <>
+      <main>
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          {/* Header Section */}
+          <div className="lg:flex lg:items-center lg:justify-between">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+                Profile
+              </h2>
+              <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-2">
+                <Link
+                  href=""
+                  className="mt-2 flex items-center text-sm text-gray-500"
+                >
+                  Menu
+                </Link>
+                <Link
+                  href=""
+                  className="mt-2 flex items-center text-sm text-gray-500"
+                >
+                  <ChevronRightIcon
+                    aria-hidden="true"
+                    className="mr-2 size-5 shrink-0 text-gray-400"
+                  />
+                  Sub Menu
+                </Link>
+              </div>
+            </div>
+            <div className="mt-5 flex lg:ml-4 lg:mt-0"></div>
+          </div>
         </div>
-        <div className="flex items-center space-x-4">
-          <span className="text-gray-600 font-medium">User</span>
-          <img
-            src="/user-avatar.png"
-            alt="User Avatar"
-            className="w-10 h-10 rounded-full border border-gray-300"
+      </main>
+
+      <div className="flex-1 p-6">
+        {/* Profile Card */}
+        <ProfileCard />
+
+        {/* Sections */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          {/* Bank Accounts */}
+          <ListSection
+            title="Bank Accounts"
+            data={bankAccounts}
+            onAddItem={handleAddBankAccount}
+            onDeleteItem={handleDeleteBankAccount}
+            onUpdateItem={handleUpdateBankAccount}
+            onOpenModal={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+            onCloseModal={function (): void {
+              throw new Error("Function not implemented.");
+            }}
           />
-        </div>
-      </header>
 
-      {/* Profile Card */}
-      <ProfileCard />
+          {/* Contact Persons */}
+          <ListSection
+            title="Contact Persons"
+            data={contactPersons}
+            onAddItem={handleAddContactPerson}
+            onDeleteItem={handleDeleteContactPerson}
+            onUpdateItem={handleUpdateContactPerson}
+            onOpenModal={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+            onCloseModal={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
 
-      {/* Sections */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        {/* Bank Accounts */}
-        <ListSection
-          title="Bank Accounts"
-          data={bankAccounts}
-          onAddItem={handleAddBankAccount}
-          onDeleteItem={handleDeleteBankAccount}
-          onUpdateItem={handleUpdateBankAccount}
-          onOpenModal={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          onCloseModal={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-
-        {/* Contact Persons */}
-        <ListSection
-          title="Contact Persons"
-          data={contactPersons}
-          onAddItem={handleAddContactPerson}
-          onDeleteItem={handleDeleteContactPerson}
-          onUpdateItem={handleUpdateContactPerson}
-          onOpenModal={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          onCloseModal={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-
-        {/* Salespersons */}
-        <ListSection
-          title="Sales Persons"
-          data={salespersons}
-          onAddItem={handleAddSalesperson}
-          onDeleteItem={handleDeleteSalesperson}
-          onUpdateItem={handleUpdateSalesperson}
-          onOpenModal={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          onCloseModal={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-      </section>
-    </main>
+          {/* Salespersons */}
+          <ListSection
+            title="Sales Persons"
+            data={salespersons}
+            onAddItem={handleAddSalesperson}
+            onDeleteItem={handleDeleteSalesperson}
+            onUpdateItem={handleUpdateSalesperson}
+            onOpenModal={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+            onCloseModal={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
+        </section>
+      </div>
+    </>
   );
 };
 
