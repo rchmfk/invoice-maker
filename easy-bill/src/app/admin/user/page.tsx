@@ -2,7 +2,7 @@
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { DotsVerticalIcon } from "@heroicons/react/solid";
+import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 
 interface User {
   id: number;
@@ -26,12 +26,12 @@ const UserManagement: React.FC = () => {
     { id: 2, name: "User 2", email: "Aiueo", role: "Client" },
     { id: 3, name: "User 3", email: "Labubu", role: "Client" },
     { id: 4, name: "User 4", email: "Labubu", role: "Client" },
-    { id: 5, name: "User 5", email: "Labubu", role: "Paid" },
+    { id: 5, name: "User 5", email: "Labubu", role: "Admin" },
     { id: 6, name: "User 6", email: "Labubu", role: "Admin" },
-    { id: 7, name: "User 7", email: "Example", role: "Paid" },
+    { id: 7, name: "User 7", email: "Example", role: "Admin" },
     { id: 8, name: "User 8", email: "Example", role: "Admin" },
     { id: 9, name: "User 9", email: "Example", role: "Client" },
-    { id: 10, name: "User 10", email: "Example", role: "Paid" },
+    { id: 10, name: "User 10", email: "Example", role: "Admin" },
     { id: 11, name: "User 11", email: "Example", role: "Admin" },
     { id: 12, name: "User 12", email: "Example", role: "Client" },
   ]);
@@ -133,7 +133,6 @@ const UserManagement: React.FC = () => {
             <option value="All">All</option>
             <option value="Admin">Admin</option>
             <option value="Client">Client</option>
-            <option value="Paid">Paid</option>
           </select>
           <input
             type="text"
@@ -169,7 +168,7 @@ const UserManagement: React.FC = () => {
                 <td className="border p-2 text-center">
                   <Menu as="div" className="relative inline-block text-left">
                     <Menu.Button>
-                      <DotsVerticalIcon className="h-5 w-5 text-gray-600 hover:text-gray-800" />
+                      <EllipsisVerticalIcon className="h-5 w-5 text-gray-600 hover:text-gray-800" />
                     </Menu.Button>
                     <Transition
                       enter="transition ease-out duration-100"
@@ -300,7 +299,6 @@ const UserManagement: React.FC = () => {
                   >
                     <option value="Client">Client</option>
                     <option value="Admin">Admin</option>
-                    <option value="Paid">Paid</option>
                   </select>
                 </div>
                 <div className="flex justify-end gap-2">
