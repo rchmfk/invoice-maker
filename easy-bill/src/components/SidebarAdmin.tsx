@@ -10,7 +10,7 @@ import {
   UserCircleIcon,
   UsersIcon,
   ArrowRightOnRectangleIcon,
-} from "@heroicons/react/24/solid";
+} from "@heroicons/react/20/solid";
 
 const menuItems = [
   { name: "Dashboard", icon: "home" },
@@ -25,30 +25,30 @@ const menuItems = [
 const getIcon = (iconName) => {
   switch (iconName) {
     case "home":
-      return <HomeIcon className="h-5 w-5 text-gray-600 hover:text-gray-800" />;
+      return <HomeIcon className="h-5 w-4 text-gray-700 hover:text-gray-800" />;
     case "document-text":
       return (
-        <DocumentTextIcon className="h-5 w-5 text-gray-600 hover:text-gray-800" />
+        <DocumentTextIcon className="h-5 w-4 text-gray-700 hover:text-gray-800" />
       );
     case "credit-card":
       return (
-        <CreditCardIcon className="h-5 w-5 text-gray-600 hover:text-gray-800" />
+        <CreditCardIcon className="h-5 w-4 text-gray-700 hover:text-gray-800" />
       );
     case "briefcase":
       return (
-        <BriefcaseIcon className="h-5 w-5 text-gray-600 hover:text-gray-800" />
+        <BriefcaseIcon className="h-5 w-4 text-gray-700 hover:text-gray-800" />
       );
     case "user-circle":
       return (
-        <UserCircleIcon className="h-5 w-5 text-gray-600 hover:text-gray-800" />
+        <UserCircleIcon className="h-5 w-4 text-gray-700 hover:text-gray-800" />
       );
     case "user-group":
       return (
-        <UsersIcon className="h-5 w-5 text-gray-600 hover:text-gray-800" />
+        <UsersIcon className="h-5 w-4 text-gray-700 hover:text-gray-800" />
       );
     case "arrow-left-end-on-rectangle":
       return (
-        <ArrowRightOnRectangleIcon className="h-5 w-5 text-gray-600 hover:text-gray-800" />
+        <ArrowRightOnRectangleIcon className="h-5 w-4 text-gray-700 hover:text-gray-800" />
       );
     default:
       return null;
@@ -65,7 +65,7 @@ const SidebarAdmin = () => {
 
   return (
     <>
-      <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+      <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-100">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">
@@ -91,7 +91,7 @@ const SidebarAdmin = () => {
                 </svg>
               </button>
               <a href="/" className="flex ms-2 md:me-24">
-                <img src="" className="h-8 me-3" alt="EasyBill Logo" />
+                {/* <img src="" className="h-8 me-3" alt="EasyBill Logo" /> */}
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">
                   EasyBill
                 </span>
@@ -121,41 +121,20 @@ const SidebarAdmin = () => {
                   >
                     <div className="px-4 py-3" role="none">
                       <p className="text-sm text-gray-900" role="none">
-                        Neil Sims
+                        {`nama`}
                       </p>
-                      <p
-                        className="text-sm font-medium text-gray-900 truncate"
-                        role="none"
-                      >
-                        neil.sims@flowbite.com
+                      <p className="text-sm text-gray-900 truncate" role="none">
+                        {`email@email.com`}
                       </p>
                     </div>
                     <ul className="py-1" role="none">
                       <li>
                         <a
-                          href="#"
+                          href="/admin/profile"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                          Dashboard
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          Settings
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          Earnings
+                          Profile
                         </a>
                       </li>
                       <li>
@@ -180,11 +159,11 @@ const SidebarAdmin = () => {
         id="logo-sidebar"
         className={`fixed top-0 left-0 z-48 w-64 h-screen pt-20 transition-transform ${
           open ? "translate-x-0" : "-translate-x-full"
-        } bg-white border-r border-gray-200 sm:translate-x-0`}
+        } bg-white border-r border-gray-100 sm:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-white ">
-          <ul className="space-y-2 font-medium">
+        <div className="h-full px-3 pb-2 overflow-y-auto bg-white text-sm">
+          <ul className="space-y-2">
             {menuItems.map((menu, index) => (
               <li key={index}>
                 <Link
@@ -193,10 +172,10 @@ const SidebarAdmin = () => {
                       ? "/admin"
                       : `/admin/${menu.name.toLowerCase()}`
                   }
-                  className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                  className="flex items-center px-6 py-3 text-gray-500 font-light rounded-lg hover:bg-gray-100 group"
                 >
                   {getIcon(menu.icon)} {/* Render the icon dynamically */}
-                  <span className="ms-3">{menu.name}</span>
+                  <span className="ms-4">{menu.name}</span>
                 </Link>
               </li>
             ))}
