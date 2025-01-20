@@ -14,28 +14,28 @@ export default function InvoiceAdminPage() {
                 Invoice
               </h2>
               <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-2">
-                <Link
-                  href=""
+              <Link
+                  href="/admin"
                   className="mt-2 flex items-center text-sm text-gray-500"
                 >
-                  Menu
+                  Dashboard
                 </Link>
                 <Link
-                  href=""
+                  href="/admin/invoice"
                   className="mt-2 flex items-center text-sm text-gray-500"
                 >
                   <ChevronRightIcon
                     aria-hidden="true"
                     className="mr-2 size-5 shrink-0 text-gray-400"
                   />
-                  Sub Menu
+                  Invoice
                 </Link>
               </div>
             </div>
             <div className="mt-5 flex lg:ml-4 lg:mt-0">
               <span className="sm:ml-3">
-                <button
-                  type="button"
+                <Link
+                  href="/admin/create-invoice"
                   className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
                   <PlusIcon
@@ -43,7 +43,7 @@ export default function InvoiceAdminPage() {
                     className="-ml-0.5 mr-1.5 size-5"
                   />
                   Create Invoice
-                </button>
+                </Link>
               </span>
             </div>
           </div>

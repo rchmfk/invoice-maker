@@ -13,20 +13,20 @@ const Client = () => {
               </h2>
               <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-2">
                 <Link
-                  href=""
+                  href="/admin"
                   className="mt-2 flex items-center text-sm text-gray-500"
                 >
-                  Menu
+                  Dashboard
                 </Link>
                 <Link
-                  href=""
+                  href="/admin/client"
                   className="mt-2 flex items-center text-sm text-gray-500"
                 >
                   <ChevronRightIcon
                     aria-hidden="true"
                     className="mr-2 size-5 shrink-0 text-gray-400"
                   />
-                  Sub Menu
+                  Client
                 </Link>
               </div>
             </div>
