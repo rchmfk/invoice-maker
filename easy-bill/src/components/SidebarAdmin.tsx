@@ -116,7 +116,7 @@ const SidebarAdmin = () => {
                 </div>
                 {openIcon && (
                   <div
-                    className="fixed top-12 right-0 transition-transform z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow"
+                    className="fixed top-12 right-2 transition-transform z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow"
                     id="dropdown-user"
                   >
                     <div className="px-4 py-3" role="none">
@@ -178,7 +178,7 @@ const SidebarAdmin = () => {
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform ${
+        className={`fixed top-0 left-0 z-48 w-64 h-screen pt-20 transition-transform ${
           open ? "translate-x-0" : "-translate-x-full"
         } bg-white border-r border-gray-200 sm:translate-x-0`}
         aria-label="Sidebar"
