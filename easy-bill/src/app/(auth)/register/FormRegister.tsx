@@ -57,17 +57,16 @@ const FormRegister = () => {
   const RegisterGoogle = () => {
     signinWithGoogle()
       .then((result) => {
-        
         const userData = {
           name: result.user.displayName,
           email: result.user.email,
           userId: result.user.uid,
           phoneNumber: result.user.phoneNumber,
           address: "",
-          role: "USER"
-      }
+          role: "USER",
+        };
 
-      useAddUser(userData);
+        useAddUser(userData);
         // router.push("/");
       })
       .catch((err) => console.log(err));
@@ -88,7 +87,7 @@ const FormRegister = () => {
   return (
     <form
       onSubmit={handleSubmit(registerSubmit)}
-      className="flex flex-col space-y-4 mt-4"
+      className="w-full flex flex-col space-y-4 mt-4"
     >
       <div className="flex flex-col gap-1.5">
         <label htmlFor="name">Your Name</label>
