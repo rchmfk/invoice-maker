@@ -2,7 +2,11 @@
 
 import { useOutsideClick } from "@/hooks/useOutsideClickEvent";
 import { paymentOption, salesPersonOption } from "@/public/DummtData";
-import { ChevronDownIcon, EllipsisVerticalIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  EllipsisVerticalIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -13,17 +17,23 @@ type Name = {
 const InvoiceOption = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [toogleSalesPersonOption, setToogleSalesPersonOption] = useState<boolean>(false);
-  const [tooglePaymentOption, setTooglePaymentOption] = useState<boolean>(false);
+  const [toogleSalesPersonOption, setToogleSalesPersonOption] =
+    useState<boolean>(false);
+  const [tooglePaymentOption, setTooglePaymentOption] =
+    useState<boolean>(false);
   const [salesPerson, setSalesPerson] = useState<Name>({
     name: searchParams.get("salesPerson") || "All",
   });
   const [paymentProcess, setPaymentProcess] = useState<Name>({
     name: searchParams.get("paymentProcess") || "All",
   });
-  const [searchInvoice, setSearchInvoice] = useState(searchParams.get("searchInvoice") || "");
+  const [searchInvoice, setSearchInvoice] = useState(
+    searchParams.get("searchInvoice") || ""
+  );
 
-  const salesPersonOptionRef = useOutsideClick(() => setToogleSalesPersonOption(false));
+  const salesPersonOptionRef = useOutsideClick(() =>
+    setToogleSalesPersonOption(false)
+  );
   const paymentOptionRef = useOutsideClick(() => setTooglePaymentOption(false));
 
   const updateSearchParams = (key: string, value: string) => {
@@ -65,7 +75,9 @@ const InvoiceOption = () => {
           </p>
           <p>{salesPerson.name}</p>
           <ChevronDownIcon
-            className={`size-5 transition ${toogleSalesPersonOption ? "rotate-180" : ""}`}
+            className={`size-5 transition ${
+              toogleSalesPersonOption ? "rotate-180" : ""
+            }`}
           />
           {toogleSalesPersonOption && (
             <div className="absolute bg-white top-[57px] overflow-hidden flex flex-col rounded-lg border-black/20 border w-full">
@@ -92,7 +104,9 @@ const InvoiceOption = () => {
           </p>
           <p>{paymentProcess.name}</p>
           <ChevronDownIcon
-            className={`size-5 transition ${tooglePaymentOption ? "rotate-180" : ""}`}
+            className={`size-5 transition ${
+              tooglePaymentOption ? "rotate-180" : ""
+            }`}
           />
           {tooglePaymentOption && (
             <div className="absolute bg-white top-[57px] overflow-hidden flex flex-col rounded-lg border-black/20 border w-full">
