@@ -47,8 +47,8 @@ export default function InvoiceAdminPage() {
               </span>
             </div>
           </div>
-          <div className="flex items-center justify-center mb-4 rounded bg-gray-50">
-            <div className="flex flex-col rounded-lg bg-white shadow-[0px_5px_10px_0px_rgba(0,0,0,0.05)] gap-2 w-full">
+          <div className="flex items-center justify-center mb-4 rounded">
+            <div className="flex flex-col rounded-lg bg-white shadow-[0px_5px_10px_0px_rgba(0,0,0,0.03)] mt-10 gap-2 w-full">
               <InvoiceOption />
               <InvoiceList />
               {/* Pagination */}
