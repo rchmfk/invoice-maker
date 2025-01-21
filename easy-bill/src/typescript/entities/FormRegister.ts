@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const phoneNumberRegex = /^\+62\s\d{10,15}$/;
+const phoneNumberRegex = /^\+62\s\d{9,15}$/;
 
 export const formRegisterSchema = z
   .object({
@@ -12,7 +12,7 @@ export const formRegisterSchema = z
     password: z.string().min(8, { message: "Please enter a valid password." }),
     confirmPassword: z
       .string()
-      .min(8, { message: "Please confirm your password." }),
+      .min(8, { message: "Confirm password must be same with original password" }),
     address: z
       .string()
       .min(12, { message: "Address must be at least 12 characters long." })
@@ -23,6 +23,7 @@ export const formRegisterSchema = z
         message: "Phone number must be in the format +62 XXXXXXXXXX",
       })
       .min(10),
+      role: z.string().min(4).max(5)
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {

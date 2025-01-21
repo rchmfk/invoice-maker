@@ -1,6 +1,16 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
+import { Container } from "@/components/Landing/Container";
+import { Hero } from "@/components/Landing/Hero";
+import { SectionTitle } from "@/components/Landing/SectionTitle";
+import { Benefits } from "@/components/Landing/Benefits";
+import { Video } from "@/components/Landing/Video";
+import { Testimonials } from "@/components/Landing/Testimonials";
+import { Faq } from "@/components/Landing/Faq";
+import { Cta } from "@/components/Landing/Cta";
+import { benefitOne, benefitTwo } from "@/components/Landing/data";
+
 export default function Home() {
   return (
     <>
