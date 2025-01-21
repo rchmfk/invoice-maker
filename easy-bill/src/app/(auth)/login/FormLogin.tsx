@@ -50,7 +50,7 @@ const FormLogin = () => {
           userId: result.user.uid,
           phoneNumber: result.user.phoneNumber,
           address: "",
-          role: "USER",
+          role: "Client",
         };
 
         useAddUser(userData);

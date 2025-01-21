@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import {
   ChevronRightIcon,
@@ -8,6 +8,16 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { db } from "@/services/firebase";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 interface User {
   id: number;
@@ -22,25 +32,13 @@ interface PopupForm {
   password: string;
   confirmPassword: string;
   role: string;
+  address: string;
+  phoneNumber: string;
 }
 
 const UserManagement: React.FC = () => {
   const [roleFilter, setRoleFilter] = useState<string>("All");
-  const [users, setUsers] = useState<User[]>([
-    { id: 1, name: "User 1", email: "Aiueo", role: "Admin" },
-    { id: 2, name: "User 2", email: "Aiueo", role: "Client" },
-    { id: 3, name: "User 3", email: "Labubu", role: "Client" },
-    { id: 4, name: "User 4", email: "Labubu", role: "Client" },
-    { id: 5, name: "User 5", email: "Labubu", role: "Admin" },
-    { id: 6, name: "User 6", email: "Labubu", role: "Admin" },
-    { id: 7, name: "User 7", email: "Example", role: "Admin" },
-    { id: 8, name: "User 8", email: "Example", role: "Admin" },
-    { id: 9, name: "User 9", email: "Example", role: "Client" },
-    { id: 10, name: "User 10", email: "Example", role: "Admin" },
-    { id: 11, name: "User 11", email: "Example", role: "Admin" },
-    { id: 12, name: "User 12", email: "Example", role: "Client" },
-  ]);
-
+  const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isAddUserPopupOpen, setAddUserPopupOpen] = useState<boolean>(false);
   const [popupForm, setPopupForm] = useState<PopupForm>({
@@ -49,11 +47,33 @@ const UserManagement: React.FC = () => {
     password: "",
     confirmPassword: "",
     role: "Client",
+    address: "",
+    phoneNumber: "",
   });
 
-  const [editingUserId, setEditingUserId] = useState<number | null>(null);
+  const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+
+  const fetchUsers = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      const usersList: User[] = [];
+      querySnapshot.forEach((doc) => {
+        usersList.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+      setUsers(usersList);
+    } catch (error) {
+      console.error("Error fetching users: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const filteredUsers = users.filter(
     (user) =>
@@ -85,7 +105,7 @@ const UserManagement: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handleAddUserSubmit = (e: FormEvent): void => {
+  const handleAddUserSubmit = async (e: FormEvent): void => {
     e.preventDefault();
 
     if (popupForm.password !== popupForm.confirmPassword) {
@@ -93,42 +113,44 @@ const UserManagement: React.FC = () => {
       return;
     }
 
-    if (editingUserId) {
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === editingUserId
-            ? {
-                ...user,
-                name: popupForm.name,
-                email: popupForm.email,
-                role: popupForm.role,
-              }
-            : user
-        )
+    const auth = getAuth();
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        popupForm.email,
+        popupForm.password
       );
-    } else {
-      const newUser: User = {
-        id: users.length + 1,
+
+      const userId = userCredential.user.uid;
+
+      await addDoc(collection(db, "users"), {
+        userId: userId,
         name: popupForm.name,
         email: popupForm.email,
         role: popupForm.role,
-      };
+        address: popupForm.address,
+        phoneNumber: popupForm.phoneNumber,
+      });
 
-      setUsers((prevUsers) => [...prevUsers, newUser]);
+      setPopupForm({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        role: "Client",
+        address: "",
+        phoneNumber: "",
+      });
+      setAddUserPopupOpen(false);
+      fetchUsers();
+    } catch (error) {
+      console.error("Error adding/updating user: ", error);
+      alert("Error creating user: " + error.message);
     }
-
-    setPopupForm({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      role: "Client",
-    });
-    setEditingUserId(null);
-    setAddUserPopupOpen(false);
   };
 
-  const handleEditUser = (id: number): void => {
+  const handleEditUser = (id: string): void => {
     const userToEdit = users.find((user) => user.id === id);
     if (userToEdit) {
       setPopupForm({
@@ -137,18 +159,26 @@ const UserManagement: React.FC = () => {
         password: "",
         confirmPassword: "",
         role: userToEdit.role,
+        address: userToEdit.address,
+        phoneNumber: userToEdit.phoneNumber,
       });
       setEditingUserId(id);
       setAddUserPopupOpen(true);
     }
   };
 
-  const handleDeleteUser = (id: number): void => {
+  const handleDeleteUser = async (id: string): void => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this user?"
     );
     if (confirmed) {
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+      try {
+        const userRef = doc(db, "users", id);
+        await deleteDoc(userRef);
+        fetchUsers();
+      } catch (error) {
+        console.error("Error deleting user: ", error);
+      }
     }
   };
 
@@ -183,7 +213,7 @@ const UserManagement: React.FC = () => {
             <div className="mt-5 flex lg:ml-4 lg:mt-0">
               <span className="sm:ml-3">
                 <button
-                 onClick={() => setAddUserPopupOpen(true)}
+                  onClick={() => setAddUserPopupOpen(true)}
                   type="button"
                   className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
@@ -193,7 +223,6 @@ const UserManagement: React.FC = () => {
                   />
                   Create User
                 </button>
-                
               </span>
             </div>
           </div>
@@ -279,7 +308,7 @@ const UserManagement: React.FC = () => {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                           >
-                            <Menu.Items className="absolute right-0 mt-2 w-28 origin-top-right bg-white divide-y divide-gray-200 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Menu.Items className="z-50 absolute right-0 mt-2 w-28 origin-top-right bg-white divide-y divide-gray-200 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                               <div className="py-1">
                                 <Menu.Item>
                                   {({ active }) => (
@@ -475,6 +504,47 @@ const UserManagement: React.FC = () => {
                       <option value="Client">Client</option>
                       <option value="Admin">Admin</option>
                     </select>
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      htmlFor="address"
+                      className="block text-sm text-gray-700"
+                    >
+                      Address
+                    </label>
+                    <input
+                      id="address"
+                      type="text"
+                      value={popupForm.address}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setPopupForm((prev) => ({
+                          ...prev,
+                          address: e.target.value,
+                        }))
+                      }
+                      className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="phoneNumber"
+                      className="block text-sm text-gray-700"
+                    >
+                      Phone Number
+                    </label>
+                    <input
+                      id="phoneNumber"
+                      type="text"
+                      value={popupForm.phoneNumber}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setPopupForm((prev) => ({
+                          ...prev,
+                          phoneNumber: e.target.value,
+                        }))
+                      }
+                      className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+                    />
                   </div>
                   <div className="flex justify-end gap-2">
                     <button

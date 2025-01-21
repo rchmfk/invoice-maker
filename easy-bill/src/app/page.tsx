@@ -1,61 +1,34 @@
-import {Footer} from "@/components/Landing/Footer";
-import {Navbar} from "@/components/Landing/Navbar";
-import Image from "next/image";
-
+import { Navbar } from "@/components/Landing/Navbar";
+import { Footer } from "@/components/Landing/Footer";
 import { Container } from "@/components/Landing/Container";
 import { Hero } from "@/components/Landing/Hero";
 import { SectionTitle } from "@/components/Landing/SectionTitle";
 import { Benefits } from "@/components/Landing/Benefits";
 import { Video } from "@/components/Landing/Video";
-import { Testimonials } from "@/components/Landing/Testimonials";
-import { Faq } from "@/components/Landing/Faq";
-import { Cta } from "@/components/Landing/Cta";
 import { benefitOne, benefitTwo } from "@/components/Landing/data";
 
 export default function Home() {
   return (
     <>
       <Container>
-        <Navbar/>
+        <Navbar />
         <Hero />
-        <SectionTitle
-          preTitle="Features"
-          title=" Our Features You Can Get"
-        >
-          Whether you're running a retail operation, offering services, or managing projects, EasyBill helps streamline your invoicing process and keeps your business running smoothly.
+        <SectionTitle preTitle="Features" title=" Our Features You Can Get">
+          Whether you are running a retail operation, offering services, or
+          managing projects, EasyBill helps streamline your invoicing process
+          and keeps your business running smoothly.
         </SectionTitle>
 
         <Benefits data={benefitOne} />
         <Benefits imgPos="right" data={benefitTwo} />
 
-        <SectionTitle
-          preTitle="Watch a video"
-          title="Learn how to fullfil your needs"
-        >
-          This section is to highlight a promo or demo video of your product.
-          Analysts says a landing page with video has 3% more conversion rate.
-          So, don&apos;t forget to add one. Just like this.
+        <SectionTitle preTitle="Watch a video" title="See EasyBill in Action">
+          Watch how EasyBill simplifies invoicing, saves you time, and helps you
+          create professional invoices effortlessly. Discover the features that
+          make managing your business finances easier and more efficient!
         </SectionTitle>
 
         <Video videoId="fZ0D0cnR88E" />
-
-        <SectionTitle
-          preTitle="Testimonials"
-          title="Here's what our customers said"
-        >
-          Testimonials is a great way to increase the brand trust and awareness.
-          Use this section to highlight your popular customers.
-        </SectionTitle>
-
-        <Testimonials />
-
-        <SectionTitle preTitle="FAQ" title="Frequently Asked Questions">
-          Answer your customers possible questions here, it will increase the
-          conversion rate as well as support or chat requests.
-        </SectionTitle>
-
-        <Faq />
-        <Cta />
       </Container>
       <Footer />
     </>
