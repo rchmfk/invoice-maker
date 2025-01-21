@@ -14,7 +14,7 @@ export default function InvoiceAdminPage() {
                 Invoice
               </h2>
               <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-2">
-              <Link
+                <Link
                   href="/admin"
                   className="mt-2 flex items-center text-sm text-gray-500"
                 >
