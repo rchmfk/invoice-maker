@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon, BookOpenIcon, LockClosedIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
 
@@ -23,11 +23,24 @@ const ClientProfile: React.FC = () => {
   const handlePasswordSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const data = {
-      currentPassword: formData.get("current-password") as string,
-      newPassword: formData.get("new-password") as string,
-      confirmPassword: formData.get("confirm-password") as string,
-    };
+    const currentPassword = formData.get("current-password") as string;
+    const newPassword = formData.get("new-password") as string;
+    const confirmPassword = formData.get("confirm-password") as string;
+
+    if (newPassword.length < 4) {
+      alert("New password must be at least 4 characters long.");
+      return;
+    }
+    if (currentPassword === newPassword) {
+      alert("New password cannot be the same as the current password.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      alert("New password and confirm password do not match.");
+      return;
+    }
+
+    const data = { currentPassword, newPassword, confirmPassword };
     console.log(data);
     alert("Password updated!");
   };
@@ -38,9 +51,7 @@ const ClientProfile: React.FC = () => {
         {/* Header */}
         <div className="mb-4 flex items-center justify-between lg:flex-row">
           <div className="min-w-0">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-              Profile
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Profile</h2>
             <div className="mt-1 flex flex-wrap items-center text-sm text-gray-500 sm:space-x-2">
               <Link href="/admin" className="flex items-center">
                 Menu
@@ -57,27 +68,12 @@ const ClientProfile: React.FC = () => {
 
         {/* Tabs */}
         <div className="mb-4 flex border-b border-gray-200">
-          {["general", "password"].map((tab) => (
-            <button
-              key={tab}
-              className={`flex items-center p-4 text-sm ${
-                activeTab === tab
-                  ? "border-b-2 border-gray-900 text-gray-900"
-                  : "text-gray-500"
-              }`}
-              onClick={() => setActiveTab(tab as "general" | "password")}
-            >
-              <svg
-                className="mr-2 h-5 w-5"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {tab === "general" ? (
-                  <path d="M4 3a2 2 0 012-2h8a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V3z" />
-                ) : (
-                  <path d="M2 10a6 6 0 1112 0v2a2 2 0 002 2h1a1 1 0 010 2h-2a4 4 0 01-8 0H3a1 1 0 010-2h1a2 2 0 002-2v-2a6 6 0 016-6z" />
-                )}
-              </svg>
+          {[
+            { tab: "general", Icon: BookOpenIcon },
+            { tab: "password", Icon: LockClosedIcon },
+          ].map(({ tab, Icon }) => (
+            <button key={tab} className={`flex items-center p-4 text-sm ${activeTab === tab ? "border-b-2 border-gray-900 text-gray-900" : "text-gray-500"}`} onClick={() => setActiveTab(tab as "general" | "password")}>
+              <Icon className="mr-2 h-5 w-5" />
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
           ))}
@@ -105,35 +101,17 @@ const ClientProfile: React.FC = () => {
                     <label htmlFor={name} className="block text-sm font-medium">
                       {label}
                     </label>
-                    <input
-                      type="text"
-                      name={name}
-                      id={name}
-                      defaultValue={defaultValue}
-                      className="mt-1 w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                    />
+                    <input type="text" name={name} id={name} defaultValue={defaultValue} className="mt-1 w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
                   </div>
                 ))}
               </div>
               <div>
-                <label
-                  htmlFor="address"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                   Address
                 </label>
-                <input
-                  type="text"
-                  name="address"
-                  id="address"
-                  defaultValue="19034 Verna Unions Apt. 164 - Honolulu, RI / 87535"
-                  className="mt-1 w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                />
+                <input type="text" name="address" id="address" defaultValue="19034 Verna Unions Apt. 164 - Honolulu, RI / 87535" className="mt-1 w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
               </div>
-              <button
-                type="submit"
-                className="self-end rounded bg-gray-900 px-4 py-2 text-white hover:bg-gray-700"
-              >
+              <button type="submit" className="self-end rounded bg-gray-900 px-4 py-2 text-white hover:bg-gray-700">
                 Save Changes
               </button>
             </form>
@@ -149,19 +127,10 @@ const ClientProfile: React.FC = () => {
                   <label htmlFor={name} className="block text-sm font-medium">
                     {label}
                   </label>
-                  <input
-                    type="password"
-                    name={name}
-                    id={name}
-                    className="mt-1 w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                    required
-                  />
+                  <input type="password" name={name} id={name} className="mt-1 w-full rounded-md border-gray-300 shadow-sm sm:text-sm" required />
                 </div>
               ))}
-              <button
-                type="submit"
-                className="self-end rounded bg-gray-900 px-4 py-2 text-white hover:bg-gray-700"
-              >
+              <button type="submit" className="self-end rounded bg-gray-900 px-4 py-2 text-white hover:bg-gray-700">
                 Update Password
               </button>
             </form>
