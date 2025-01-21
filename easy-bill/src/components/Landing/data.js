@@ -11,8 +11,8 @@ import {
   import benefitTwoImg from "../../public/img/benefit-two.png";
   
   const benefitOne = {
-    title: "Highlight your benefits",
-    desc: "You can use this space to highlight your first benefit or a feature of your product. It can also contain an image or Illustration like in the example along with some bullet points.",
+    title: "What Benefits Will You Get",
+    desc: "EasyBill helps you save time by automating invoice creation, enhances your business’s credibility with professional invoices, and offers affordable pricing without compromising on quality or features.",
     image: benefitOneImg,
     bullets: [
       {
@@ -35,22 +35,22 @@ import {
   
   const benefitTwo = {
     title: "What Benefits Will You Get",
-    desc: "",
+    desc: "EasyBill offers customizable professional invoice templates and powerful reporting tools to help you create polished invoices and gain valuable insights into your business's financial performance.",
     image: benefitTwoImg,
     bullets: [
       {
         title: "Professional Invoice Templates",
-        desc: "",
+        desc: "EasyBill offers a variety of sleek, professional invoice templates that help you create polished and credible invoices in just a few clicks. These templates are designed to make your business look more professional and trustworthy to your customers.",
         icon: <DevicePhoneMobileIcon />,
       },
       {
         title: "Customizable",
-        desc: "",
+        desc: "With EasyBill, you have the flexibility to customize your invoices to suit your specific needs. You can personalize your templates with your business logo, colors, payment terms, and other details, giving you full control over the appearance and content of your invoices.",
         icon: <AdjustmentsHorizontalIcon />,
       },
       {
         title: "Reporting and Analytics",
-        desc: "",
+        desc: "EasyBill provides detailed reporting and analytics tools that help you track your invoicing performance. You can view trends, monitor payments, and gain insights into your business's financial health, making it easier to make informed decisions and improve cash flow management.",
         icon: <SunIcon />,
       },
     ],
