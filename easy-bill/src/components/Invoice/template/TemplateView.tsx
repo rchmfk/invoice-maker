@@ -7,13 +7,9 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import InvoiceCanvasPDF from "./InvoiceCanvasPDF";
 import useSaveTemplateDB from "@/hooks/useSaveTemplateDB";
 import { useInvoiceStore } from "@/store/useInvoiceStore";
-import { useRef } from "react";
-import { useReactToPrint } from "react-to-print";
 
 const TemplateView = () => {
   const invoiceData = useInvoiceStore((state) => state.invoiceData);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const reactToPrintFn = useReactToPrint({ contentRef });
   const {
     handleDragEnd,
     sections,
@@ -32,7 +28,6 @@ const TemplateView = () => {
       paymentInfo: selectedPaymentInfoTemplate,
       clientInfo: selectedClientInfoTemplate,
     });
-    reactToPrintFn()
   };
 
   return (
