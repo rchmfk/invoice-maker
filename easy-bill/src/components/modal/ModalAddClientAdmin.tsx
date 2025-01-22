@@ -1,35 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { db } from "@/services/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 type AddClientModalProps = {
   isOpen: boolean;
   closeModal: () => void;
-  addClient: (client: {
-    name: string;
-    address: string;
-    phoneNumber: string;
-  }) => void;
+  addClient: (client: { name: string; address: string; phoneNumber: string; userId: string }) => void;
 };
 
-const ModalAddClientAdmin = ({
-  isOpen,
-  closeModal,
-  addClient,
-}: AddClientModalProps) => {
+const ModalAddClientAdmin = ({ isOpen, closeModal, addClient }: AddClientModalProps) => {
   const [clientName, setClientName] = useState("");
   const [clientAddress, setClientAddress] = useState("");
   const [clientPhoneNumber, setClientPhoneNumber] = useState("");
+  const [userId, setUserId] = useState("");
+  const [users, setUsers] = useState<any[]>([]);
+
+ 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const usersCollection = collection(db, "users");
+        const q = query(usersCollection, where("role", "in", ["Client", "client"]));
+        const usersSnapshot = await getDocs(q);
+        const usersList = usersSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setUsers(usersList);
+      } catch (error) {
+        console.error("Error fetching users: ", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (clientName && clientAddress && clientPhoneNumber) {
+    if (clientName && clientAddress && clientPhoneNumber && userId) {
+     
       addClient({
         name: clientName,
         address: clientAddress,
         phoneNumber: clientPhoneNumber,
+        userId: userId,
       });
+
+     
+      setClientName("");
+      setClientAddress("");
+      setClientPhoneNumber("");
+      setUserId("");
+
+     
       closeModal();
     }
   };
@@ -46,10 +72,7 @@ const ModalAddClientAdmin = ({
           </div>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                 Name
               </label>
               <input
@@ -62,10 +85,7 @@ const ModalAddClientAdmin = ({
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="address"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                 Address
               </label>
               <input
@@ -78,10 +98,7 @@ const ModalAddClientAdmin = ({
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="phoneNumber"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
                 Phone Number
               </label>
               <input
@@ -92,6 +109,25 @@ const ModalAddClientAdmin = ({
                 required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="userId" className="block text-sm font-medium text-gray-700">
+                User ID
+              </label>
+              <select
+                id="userId"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="" disabled>Select a User</option>
+                {users.map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="mt-4 flex justify-end">
               <button
