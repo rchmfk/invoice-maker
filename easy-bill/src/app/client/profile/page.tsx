@@ -3,11 +3,14 @@
 import { ChevronRightIcon, BookOpenIcon, LockClosedIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
+import { db, auth } from "@/services/firebase";
+import { setDoc, doc } from "firebase/firestore";
+import { getAuth, updatePassword } from "firebase/auth";
 
 const ClientProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"general" | "password">("general");
 
-  const handleGeneralSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleGeneralSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -16,11 +19,20 @@ const ClientProfile: React.FC = () => {
       email: formData.get("email") as string,
       address: formData.get("address") as string,
     };
-    console.log(data);
-    alert("Changes saved!");
+
+    try {
+      const user = auth.currentUser;
+      const userId = user ? user.uid : "default_user_id";
+
+      await setDoc(doc(db, "users", userId), data);
+      alert("Perubahan disimpan!");
+    } catch (error) {
+      console.error("Error menyimpan data pengguna:", error);
+      alert("Terjadi kesalahan saat menyimpan perubahan");
+    }
   };
 
-  const handlePasswordSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handlePasswordSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const currentPassword = formData.get("current-password") as string;
@@ -28,21 +40,30 @@ const ClientProfile: React.FC = () => {
     const confirmPassword = formData.get("confirm-password") as string;
 
     if (newPassword.length < 4) {
-      alert("New password must be at least 4 characters long.");
+      alert("Password baru harus memiliki setidaknya 4 karakter.");
       return;
     }
     if (currentPassword === newPassword) {
-      alert("New password cannot be the same as the current password.");
+      alert("Password baru tidak boleh sama dengan password lama.");
       return;
     }
     if (newPassword !== confirmPassword) {
-      alert("New password and confirm password do not match.");
+      alert("Password baru dan konfirmasi password tidak cocok.");
       return;
     }
 
-    const data = { currentPassword, newPassword, confirmPassword };
-    console.log(data);
-    alert("Password updated!");
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        await updatePassword(user, newPassword);
+        alert("Password berhasil diperbarui!");
+      } else {
+        alert("Pengguna tidak ditemukan.");
+      }
+    } catch (error) {
+      console.error("Error memperbarui password:", error);
+      alert("Terjadi kesalahan saat memperbarui password.");
+    }
   };
 
   return (
