@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const ProfileCard: React.FC = () => {
   const [editing, setEditing] = useState(false); 
   const [formData, setFormData] = useState({
-    name: "PT Gemblung",
+    name: "PT Angin Ribut",
     address: "Jl. Jalan jalan, Kecamatan, Kelurahan, Kota, Provinsi, Kode Pos",
     contact: "087878787878",
     logo: null, 

@@ -154,3 +154,16 @@ export const inputFields: {
       required: true,
     },
   ];
+
+
+// CLIENT
+
+export const clientData = [
+  {
+    clientId: 1,
+    name: "Qiana",
+    address: "Tangerang Selatan",
+    phoneNumber: "081291898989",
+    userId: "123",
+  },
+];
