@@ -17,7 +17,7 @@ interface ListSectionProps {
   onCloseModal: () => void;
 }
 
-const ListSection: React.FC<ListSectionProps> = ({ title, data, onAddItem, onDeleteItem, onUpdateItem, onOpenModal, onCloseModal }) => {
+const ListSection: React.FC<ListSectionProps> = ({ title, data, onAddItem, onDeleteItem, onUpdateItem }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null); 
   const [bank, setBank] = useState("");

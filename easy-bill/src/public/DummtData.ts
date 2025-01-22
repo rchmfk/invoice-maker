@@ -1,3 +1,5 @@
+import { InputFieldKey } from "@/typescript/entities/FormInvoice";
+
 export const invoiceData = [
   {
     invoiceId: 1,
@@ -71,6 +73,87 @@ export const paymentOption = [
 ];
 
 
+export const inputFields: {
+    id: InputFieldKey;
+    label: string;
+    type: string;
+    placeholder: string;
+    rows?: number;
+    required: boolean;
+  }[] = [
+    {
+      id: "invoiceNo",
+      label: "No",
+      type: "text",
+      placeholder: "INV/2025/0001",
+      required: true,
+    },
+    {
+      id: "date",
+      label: "Date",
+      type: "date",
+      placeholder: "",
+      required: true,
+    },
+    {
+      id: "salesPerson",
+      label: "Sales Person",
+      type: "text",
+      placeholder: "Alice",
+      required: true,
+    },
+    {
+      id: "terms",
+      label: "Terms",
+      type: "text",
+      placeholder: "Net 7 Days",
+      required: true,
+    },
+    {
+      id: "currency",
+      label: "Currency",
+      type: "text",
+      placeholder: "Dollar (USD)",
+      required: true,
+    },
+    {
+      id: "dueDate",
+      label: "Due Date",
+      type: "date",
+      placeholder: "",
+      required: true,
+    },
+    {
+      id: "client",
+      label: "Client",
+      type: "text",
+      placeholder: "John Wick",
+      required: true,
+    },
+    {
+      id: "contactPerson",
+      label: "Contact Person",
+      type: "text",
+      placeholder: "John Doe",
+      required: true,
+    },
+    {
+      id: "notes",
+      label: "Notes",
+      type: "textarea",
+      placeholder: "Notes",
+      rows: 5,
+      required: true,
+    },
+    {
+      id: "termsAndCondition",
+      label: "Terms & Conditions",
+      type: "textarea",
+      placeholder: "Terms & Conditions",
+      rows: 5,
+      required: true,
+    },
+  ];
 
 
 // CLIENT

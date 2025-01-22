@@ -1,3 +1,5 @@
+import { FieldError } from "react-hook-form";
+
 interface InputInvoiceProps {
   id: string;
   label: string;
@@ -6,7 +8,7 @@ interface InputInvoiceProps {
   register: any;
   required?: boolean;
   rows?: number;
-  error?: string;
+  error?: string | FieldError | any;
 }
 
 const InputInvoice: React.FC<InputInvoiceProps> = ({

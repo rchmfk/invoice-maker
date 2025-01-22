@@ -1,21 +1,46 @@
 "use client";
 import {
+  InputFieldKey,
   InvoiceFormValues,
   invoiceSchema,
 } from "@/typescript/entities/FormInvoice";
 import {
   ArrowsPointingOutIcon,
+  CheckIcon,
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { SubmitHandler, useFieldArray, useForm, useWatch } from "react-hook-form";
+import {
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 import InputInvoice from "./InputInvoice";
 import { calculateTotal, formatNumber } from "@/utils/formating";
+import {
+  TemplateHead,
+  TemplateClient,
+  TemplatePayment,
+  TemplateTable,
+  TemplateView,
+} from "./template";
+import { useRouter, useSearchParams } from "next/navigation";
+import useCreateInvoice from "@/hooks/useCreateInvoice";
+import { useInvoiceStore } from "@/store/useInvoiceStore";
+import { inputFields } from "@/public/DummtData";
 
 const FormInvoice = () => {
-  const [indexPage, setIndexPage] = useState("invoice_data");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const step = searchParams.get("step") || "form";
+  const headValue = searchParams.get("head");
+  const clientInfoValue = searchParams.get("client");
+  const tableValue = searchParams.get("table");
+  const paymentInfoValue = searchParams.get("payment");
+  const { setInvoiceData } = useInvoiceStore((state) => state);
+
   const {
     control,
     register,
@@ -26,7 +51,7 @@ const FormInvoice = () => {
     defaultValues: {
       invoiceNo: "",
       date: "",
-      maker: "",
+      salesPerson: "",
       currency: "",
       client: "",
       dueDate: "",
@@ -35,9 +60,9 @@ const FormInvoice = () => {
       notes: "",
       termsAndCondition: "",
       items: [
-        { item: "", description: "", quantity: 1, discount: "", price: 0 },
-        { item: "", description: "", quantity: 1, discount: "", price: 0 },
-        { item: "", description: "", quantity: 1, discount: "", price: 0 },
+        { item: "", description: "", quantity: "", discount: "", price: "" },
+        { item: "", description: "", quantity: "", discount: "", price: "" },
+        { item: "", description: "", quantity: "", discount: "", price: "" },
       ],
     },
   });
@@ -47,20 +72,19 @@ const FormInvoice = () => {
     name: "items",
   });
 
+
   const additionalDiscount = useWatch({
     control,
     name: "additionalDiscount",
     defaultValue: "",
   });
 
+
   const shippingCost = useWatch({
     control,
     name: "shippingCost",
     defaultValue: "",
   });
-
-
-  
 
   const subTotal = 10000000;
   const discountTotal = 2000000;
@@ -73,27 +97,86 @@ const FormInvoice = () => {
   });
 
   const onSubmit: SubmitHandler<InvoiceFormValues> = (data) => {
-    console.log("Invoice Data:", data);
-    setIndexPage("invoice_template");
+    useCreateInvoice(data, setInvoiceData);
+    handleSwitchPageTypeTemplate();
   };
 
-  const handleSaveInvoice = () => {
+  const handleSwitchPageTypeTemplate = () => {
+    let nextStep;
+    switch (step) {
+      case "form":
+        nextStep = "head";
+        break;
+      case "head":
+        nextStep = "client";
+        break;
+      case "client":
+        nextStep = "table";
+        break;
+      case "table":
+        nextStep = "payment";
+        break;
+      case "payment":
+        nextStep = "view";
+        break;
+      default:
+        nextStep = "form";
+    }
+    const queryParams = new URLSearchParams();
 
-  }
+    queryParams.append("step", nextStep);
+    if (headValue) queryParams.append("head", headValue);
+    if (clientInfoValue) queryParams.append("client", clientInfoValue);
+    if (tableValue) queryParams.append("table", tableValue);
+    if (paymentInfoValue) queryParams.append("payment", paymentInfoValue);
+
+    router.push(`?${queryParams.toString()}`);
+  };
+
+  const handleNext = () => {
+    handleSwitchPageTypeTemplate();
+  };
+
+  const handleView = () => {
+    if (step !== "view") {
+      const queryParams = new URLSearchParams();
+
+      queryParams.append("step", "view");
+      if (headValue) queryParams.append("head", headValue);
+      if (clientInfoValue) queryParams.append("client", clientInfoValue);
+      if (tableValue) queryParams.append("table", tableValue);
+      if (paymentInfoValue) queryParams.append("payment", paymentInfoValue);
+
+      router.push(`?${queryParams.toString()}`);
+    } else {
+      router.back();
+    }
+  };
 
   return (
     <div className="flex flex-col gap-8">
       <div className="w-full mt-12">
         <div className="flex items-center max-w-5xl mx-auto pb-10 justify-center gap-8">
           <div className="flex flex-col items-center text-center">
-            <div className="flex items-center justify-center w-8 h-8 bg-green-500 text-white rounded-full">
-              1
+            <div
+              className={`flex items-center text-white justify-center w-8 h-8 rounded-full bg-green-500
+              } `}
+            >
+              {step !== "form" ? (
+                <CheckIcon className="size-5 text-white" />
+              ) : (
+                "1"
+              )}
             </div>
             <p className="text-sm text-black mt-2">Invoice Data</p>
           </div>
           <div className="h-[2px] bg-gray-200 flex-1"></div>
-          <div className="flex flex-col items-center text-center opacity-50">
-            <div className="flex items-center justify-center w-8 h-8 bg-gray-400 text-white rounded-full">
+          <div className="flex flex-col items-center text-center">
+            <div
+              className={`flex items-center text-white justify-center w-8 h-8 rounded-full ${
+                step !== "form" ? "bg-green-500 " : "bg-gray-400"
+              } `}
+            >
               2
             </div>
             <p className="text-sm text-gray-500 mt-2">Invoice Template</p>
@@ -101,7 +184,7 @@ const FormInvoice = () => {
         </div>
       </div>
 
-      {indexPage === "invoice_data" ? (
+      {step === "form" ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="relative mb-10">
             <div className="h-[2px] bg-gray-200 top-4 -z-10 absolute w-full"></div>
@@ -110,98 +193,19 @@ const FormInvoice = () => {
             </h2>
           </div>
           <div className="grid grid-cols-2 gap-8">
-            <InputInvoice
-              id="invoiceNo"
-              label="No"
-              type="text"
-              placeholder="INV/2025/0001"
-              register={register}
-              required={true}
-              error={errors.invoiceNo?.message}
-            />
-            <InputInvoice
-              id="date"
-              label="Date"
-              type="date"
-              placeholder=""
-              register={register}
-              required={true}
-              error={errors.date?.message}
-            />
-            <InputInvoice
-              id="maker"
-              label="Maker"
-              type="text"
-              placeholder="Alice"
-              register={register}
-              required={true}
-              error={errors.maker?.message}
-            />
-            <InputInvoice
-              id="terms"
-              label="Terms"
-              type="text"
-              placeholder="Net 7 Days"
-              register={register}
-              required={true}
-              error={errors.terms?.message}
-            />
-            <InputInvoice
-              id="currency"
-              label="Currency"
-              type="text"
-              placeholder="Dollar (USD)"
-              register={register}
-              required={true}
-              error={errors.currency?.message}
-            />
-            <InputInvoice
-              id="dueDate"
-              label="Due Date"
-              type="date"
-              placeholder=""
-              register={register}
-              required={true}
-              error={errors.dueDate?.message}
-            />
-            <InputInvoice
-              id="client"
-              label="Client"
-              type="text"
-              placeholder="John Wick"
-              register={register}
-              required={true}
-              error={errors.client?.message}
-            />
-            <InputInvoice
-              id="contactPerson"
-              label="Contact Person"
-              type="text"
-              placeholder="John Doe"
-              register={register}
-              required={true}
-              error={errors.contactPerson?.message}
-            />
-            <InputInvoice
-              id="notes"
-              label="Notes"
-              type="textarea"
-              placeholder="Notes"
-              register={register}
-              rows={5}
-              required={true}
-              error={errors.notes?.message}
-            />
-            <InputInvoice
-              id="termsAndCondition"
-              label="Terms & Conditions"
-              type="textarea"
-              placeholder="Terms & Conditions"
-              register={register}
-              rows={5}
-              required={true}
-              error={errors.termsAndCondition?.message}
-            />
+            {inputFields.map((field) => (
+              <InputInvoice
+                key={field.id}
+                id={field.id}
+                label={field.label}
+                type={field.type}
+                placeholder={field.placeholder}
+                register={register}
+                required={field.required}
+                error={errors[field.id]?.message}
+                {...(field.rows && { rows: field.rows })}
+              />
+            ))}
           </div>
           <div className="w-full flex flex-col gap-8 mt-4">
             <div className="relative flex justify-between items-center">
@@ -216,9 +220,9 @@ const FormInvoice = () => {
                   append({
                     item: "",
                     description: "",
-                    quantity: 1,
+                    quantity: "",
                     discount: "",
-                    price: 0,
+                    price: "",
                   })
                 }
               >
@@ -326,7 +330,6 @@ const FormInvoice = () => {
           <div className="w-full flex items-center gap-8 flex-row mt-10">
             <button
               type="button"
-              onClick={handleSaveInvoice}
               className="py-2 bg-green-600 hover:bg-green-500 text-white w-full rounded-lg font-semibold"
             >
               Save
@@ -339,8 +342,34 @@ const FormInvoice = () => {
             </button>
           </div>
         </form>
-      ) : (
-        <div className="">Test</div>
+      ) : step === "client" ? (
+        <TemplateClient />
+      ) : step === "head" ? (
+        <TemplateHead />
+      ) : step === "table" ? (
+        <TemplateTable />
+      ) : step === "payment" ? (
+        <TemplatePayment />
+      ) : step === "view" ? (
+        <TemplateView />
+      ) : null}
+      {step !== "form" && step !== "view" && (
+        <div className="flex items-center w-full gap-4">
+          <button
+            type="button"
+            onClick={handleView}
+            className="w-full bg-green-600 hover:bg-green-500 transition rounded-lg py-2.5 text-white"
+          >
+            View Invoice
+          </button>
+          <button
+            type="button"
+            onClick={handleNext}
+            className="w-full bg-white rounded-lg py-2.5 border hover:border-green-500 hover:text-green-500 border-green-600 text-green-600"
+          >
+            Next
+          </button>
+        </div>
       )}
     </div>
   );

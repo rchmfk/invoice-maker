@@ -2,8 +2,10 @@ import InvoiceList from "@/components/Invoice/InvoiceList";
 import InvoiceOption from "@/components/Invoice/InvoiceOption";
 import { ChevronRightIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { fetchInvoices } from "./action";
 
-export default function InvoiceAdminPage() {
+export default async function InvoiceAdminPage() {
+  const invoiceDatas = await fetchInvoices()
   return (
     <>
       <div className="p-4 sm:ml-64">
