@@ -11,6 +11,8 @@ import {
   UsersIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/20/solid";
+import { signOut } from "firebase/auth";
+import { auth } from "@/services/firebase";
 
 const menuItems = [
   { name: "Dashboard", icon: "home" },
@@ -19,10 +21,9 @@ const menuItems = [
   { name: "Client", icon: "briefcase" },
   { name: "Profile", icon: "user-circle" },
   { name: "User", icon: "user-group" },
-  { name: "Logout", icon: "arrow-left-end-on-rectangle" },
 ];
 
-const getIcon = (iconName) => {
+const getIcon = (iconName: string) => {
   switch (iconName) {
     case "home":
       return <HomeIcon className="h-5 w-4 text-gray-700 hover:text-gray-800" />;
@@ -63,6 +64,11 @@ const SidebarAdmin = () => {
 
   const toggleUserMenu = () => setOpenIcon(!openIcon);
 
+  const handleLogOut = () => {
+    signOut(auth).then(() => {
+      console.log(" user logout");
+    });
+  };
   return (
     <>
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-100">
@@ -174,11 +180,20 @@ const SidebarAdmin = () => {
                   }
                   className="flex items-center px-6 py-3 text-gray-500 font-light rounded-lg hover:bg-gray-100 group"
                 >
-                  {getIcon(menu.icon)} {/* Render the icon dynamically */}
+                  {getIcon(menu.icon)}
                   <span className="ms-4">{menu.name}</span>
                 </Link>
               </li>
             ))}
+            <li>
+              <button
+                onClick={handleLogOut}
+                className="flex w-full items-center px-6 py-3 text-gray-500 font-light rounded-lg hover:bg-gray-100 group"
+              >
+                {getIcon("arrow-left-end-on-rectangle")}
+                <span className="ms-4">Logout</span>
+              </button>
+            </li>
           </ul>
         </div>
       </aside>

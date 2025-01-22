@@ -11,15 +11,16 @@ import {
   UsersIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/20/solid";
+import { signOut } from "firebase/auth";
+import { auth } from "@/services/firebase";
 
 const menuItems = [
   { name: "Dashboard", icon: "home" },
   { name: "Invoice", icon: "document-text" },
   { name: "Profile", icon: "user-circle" },
-  { name: "Logout", icon: "arrow-left-end-on-rectangle" },
 ];
 
-const getIcon = (iconName) => {
+const getIcon = (iconName: string) => {
   switch (iconName) {
     case "home":
       return <HomeIcon className="h-5 w-4 text-gray-700 hover:text-gray-800" />;
@@ -60,9 +61,15 @@ const SidebarClient = () => {
 
   const toggleUserMenu = () => setOpenIcon(!openIcon);
 
+  const handleLogOut = () => {
+    signOut(auth).then(() => {
+      console.log(" user logout");
+    });
+  };
+
   return (
     <>
-    <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-100">
+      <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-100">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">
@@ -151,7 +158,7 @@ const SidebarClient = () => {
           </div>
         </div>
       </nav>
-      
+
       <aside
         id="logo-sidebar"
         className={`fixed top-0 left-0 z-48 w-64 h-screen pt-20 transition-transform ${
@@ -171,11 +178,20 @@ const SidebarClient = () => {
                   }
                   className="flex items-center px-6 py-3 text-gray-500 font-light rounded-lg hover:bg-gray-100 group"
                 >
-                  {getIcon(menu.icon)} {/* Render the icon dynamically */}
+                  {getIcon(menu.icon)}
                   <span className="ms-4">{menu.name}</span>
                 </Link>
               </li>
             ))}
+            <li>
+              <button
+                onClick={handleLogOut}
+                className="flex w-full items-center px-6 py-3 text-gray-500 font-light rounded-lg hover:bg-gray-100 group"
+              >
+                {getIcon("arrow-left-end-on-rectangle")}
+                <span className="ms-4">Logout</span>
+              </button>
+            </li>
           </ul>
         </div>
       </aside>
