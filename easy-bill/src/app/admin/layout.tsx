@@ -1,4 +1,5 @@
 
+import AdminRouteGuard from "@/components/AdminRouteGuard";
 import SidebarAdmin from "@/components/SidebarAdmin";
 import { ReactNode } from "react";
 
@@ -7,7 +8,11 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
     <div style={{ display: 'flex' }}>
       <SidebarAdmin/>
       <div style={{ flex: 1 }}>
-        <main>{children}</main>
+        <main>
+          <AdminRouteGuard>
+          {children}
+          </AdminRouteGuard>
+        </main>
       </div>
     </div>
   );

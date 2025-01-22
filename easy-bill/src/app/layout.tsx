@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import ClientRouteGuard from "@/components/ClientRouteGuard";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,7 +35,9 @@ export default function RootLayout({
       <body
         className={` antialiased`}
       >
-        {children}
+        <ClientRouteGuard>
+          {children}
+        </ClientRouteGuard>
       </body>
     </html>
   );
