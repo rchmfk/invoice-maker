@@ -54,7 +54,6 @@ const InvoiceOption = () => {
   return (
     <div className="">
       <div className="flex gap-3 p-8">
-        {/* Sales Person */}
         <div
           className="relative border border-black/20 min-w-32 text-center rounded-lg py-4 px-3 hover:border-black/30 transition flex items-center justify-around cursor-pointer"
           ref={salesPersonOptionRef}
@@ -81,7 +80,6 @@ const InvoiceOption = () => {
             </div>
           )}
         </div>
-        {/* Payment Process */}
         <div
           className="relative border border-black/20 min-w-32 max-w-44 text-center rounded-lg py-4 px-3 hover:border-black/30 transition flex items-center justify-around cursor-pointer"
           ref={paymentOptionRef}

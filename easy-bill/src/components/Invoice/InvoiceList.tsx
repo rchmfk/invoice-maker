@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useOutsideClick } from "@/hooks/useOutsideClickEvent";
 import { invoiceData } from "@/public/DummtData";
 import {
@@ -18,6 +18,7 @@ import ModalDeleteInvoiceAdmin from "../modal/ModalDeleteInvoiceAdmin";
 
 const InvoiceList = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [showOptions, setShowOptions] = useState<number | null>(null);
   const [invoices, setInvoices] = useState(invoiceData);
   const [showDeleteInvoiceModal, setShowDeleteInvoiceModal] = useState(false);
@@ -49,7 +50,7 @@ const InvoiceList = () => {
   };
 
   const handleEditInvoice = (invoiceId: number) => {
-    console.log(`Edit invoice with ID: ${invoiceId}`);
+    router.push(`/admin/update-invoice/${invoiceId}`)
   };
 
   const handleDeleteInvoice = (invoiceId: number) => {

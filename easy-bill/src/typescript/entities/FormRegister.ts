@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const phoneNumberRegex = /^\+62\s\d{9,15}$/;
+const phoneNumberRegex = /^\d{10,15}$/;
 
 export const formRegisterSchema = z
   .object({
@@ -20,7 +20,7 @@ export const formRegisterSchema = z
     phoneNumber: z
       .string()
       .regex(phoneNumberRegex, {
-        message: "Phone number must be in the format +62 XXXXXXXXXX",
+        message: "Phone number must be 10 to 15 digits long.",
       })
       .min(10),
       role: z.string().min(4).max(5)
