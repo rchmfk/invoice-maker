@@ -1,11 +1,12 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
+import { db } from "@/services/firebase"; 
+import { doc, deleteDoc } from "firebase/firestore";
 
 type ModalProps = {
   showDeleteClientModal: boolean;
-  setShowDeleteClientModal: Dispatch<SetStateAction<boolean>>;
-  handleDelete: (clientId: number | any) => void;
-  selectedClientId: number | null
-  setClientId: (clientId: number | null) => void;
+  setShowDeleteClientModal: (value: boolean) => void;
+  handleDelete: (clientId: string) => void;
+  selectedClientId: string | null;
 };
 
 const ModalDeleteClientAdmin = ({
@@ -14,13 +15,21 @@ const ModalDeleteClientAdmin = ({
   handleDelete,
   selectedClientId,
 }: ModalProps) => {
-  return showDeleteClientModal ? (
-    <>
-      <div
-        className="fixed inset-0 bg-black/20 z-20"
-        onClick={() => setShowDeleteClientModal(false)}
-      ></div>
+  const handleDeleteClient = async () => {
+    if (selectedClientId) {
+      try {
+        const clientRef = doc(db, "clients", selectedClientId);
+        await deleteDoc(clientRef);
+        handleDelete(selectedClientId);
+      } catch (error) {
+        console.error("Error deleting client: ", error);
+      }
+    }
+    setShowDeleteClientModal(false);
+  };
 
+  return showDeleteClientModal ? (
+    <div className="fixed inset-0 bg-black/20 z-20">
       <div className="fixed inset-0 z-30 flex items-center justify-center">
         <div className="w-[440px] h-[262px] flex flex-col justify-between bg-white rounded-lg shadow-lg p-5">
           <h2 className="text-lg font-semibold">Delete</h2>
@@ -28,10 +37,7 @@ const ModalDeleteClientAdmin = ({
             <p className="text-gray-600 font-semibold">Are you sure?</p>
             <button
               className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-              onClick={() => {
-                setShowDeleteClientModal(false);
-                handleDelete(selectedClientId)
-              }}
+              onClick={handleDeleteClient}
             >
               Yes, Delete
             </button>
@@ -46,7 +52,7 @@ const ModalDeleteClientAdmin = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   ) : null;
 };
 

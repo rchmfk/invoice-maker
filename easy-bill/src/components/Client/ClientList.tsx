@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import ModalDeleteClientAdmin from "../modal/ModalDeleteClientAdmin";
 
+
 const ClientList = () => {
   const searchParams = useSearchParams();
   const [showOptions, setShowOptions] = useState<number | null>(null);
@@ -32,7 +33,7 @@ const ClientList = () => {
       !phoneNumber ||
       client.phoneNumber.toLowerCase().includes(phoneNumber.toLowerCase());
 
-      return matchesName && matchesAddress && matchesPhoneNumber;
+    return matchesName && matchesAddress && matchesPhoneNumber;
   });
 
   const toggleOptions = (index: number) => {
@@ -78,7 +79,6 @@ const ClientList = () => {
           ) : (
             filteredClients.map((client, index) => {
               return (
-                (
                 <div
                   key={index}
                   className="grid px-6 mb-2 grid-cols-[repeat(14,_minmax(0,_1fr));] pb-5 w-full space-y-4 items-end gap-2"
@@ -120,8 +120,7 @@ const ClientList = () => {
                     )}
                   </div>
                 </div>
-              )
-            )
+              );
             })
           )}
         </div>
