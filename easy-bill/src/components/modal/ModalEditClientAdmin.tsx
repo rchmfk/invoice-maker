@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { db } from "@/services/firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
 
 type EditClientModalProps = {
     isOpen: boolean;
@@ -18,9 +18,27 @@ const ModalEditClientAdmin = ({ isOpen, closeModal, client, updateClient }: Edit
     const [clientAddress, setClientAddress] = useState(client.address);
     const [clientPhoneNumber, setClientPhoneNumber] = useState(client.phoneNumber);
     const [userId, setUserId] = useState(client.userId);
+    const [users, setUsers] = useState<any[]>([]);
 
 
     useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const usersCollection = collection(db, "users");
+                const q = query(usersCollection, where("role", "in", ["Client", "client"]));
+                const usersSnapshot = await getDocs(q);
+                const usersList = usersSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setUsers(usersList);
+            } catch (error) {
+                console.error("Error fetching users: ", error);
+            }
+        };
+
+        fetchUsers();
+
         if (client) {
             setClientName(client.name);
             setClientAddress(client.address);
@@ -108,14 +126,20 @@ const ModalEditClientAdmin = ({ isOpen, closeModal, client, updateClient }: Edit
                             <label htmlFor="userId" className="block text-sm font-medium text-gray-700">
                                 User ID
                             </label>
-                            <input
+                            <select
                                 id="userId"
-                                type="text"
                                 value={userId}
                                 onChange={(e) => setUserId(e.target.value)}
                                 required
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
+                            >
+                                <option value="" disabled>Select a User</option>
+                                {users.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="mt-4 flex justify-end">
                             <button
