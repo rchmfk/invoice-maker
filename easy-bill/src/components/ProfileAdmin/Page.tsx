@@ -69,7 +69,7 @@ const ProfileAdmin = () => {
     const querySnapshot = await getDocs(collection(db, "admin"));
     const datas: any[] = [];
     querySnapshot.forEach((doc) => {
-        datas.push({ id: doc.id, ...doc.data() });
+      datas.push({ id: doc.id, ...doc.data() });
     });
     setAdminData(datas);
   };
@@ -101,7 +101,7 @@ const ProfileAdmin = () => {
     setSalesPersons(sales);
   };
 
- 
+
   const openModal = (type: string, data?: any) => {
     setModalType(type);
     setEditData(data);
@@ -145,6 +145,8 @@ const ProfileAdmin = () => {
   const handleEditAdminData = async (data: any) => {
     if (editData) {
       await updateDoc(doc(db, "admin", editData.id), data);
+    } else {
+      await addDoc(collection(db, "admin"), data);
     }
     fetchAdminData();
     closeModal();
@@ -211,35 +213,53 @@ const ProfileAdmin = () => {
     <>
       <div className="mb-4 flex border-b border-gray-200">
         {[{ tab: "general", Icon: IdentificationIcon },
-          { tab: "bank account", Icon: BanknotesIcon },
-          { tab: "contact person", Icon: PhoneIcon },
-          { tab: "sales person", Icon: UserCircleIcon },
-          { tab: "password", Icon: LockClosedIcon }
+        { tab: "bank account", Icon: BanknotesIcon },
+        { tab: "contact person", Icon: PhoneIcon },
+        { tab: "sales person", Icon: UserCircleIcon },
+        { tab: "password", Icon: LockClosedIcon }
         ].map(({ tab, Icon }) => (
-            <button
-              key={tab}
-              className={`flex items-center p-4 text-sm ${activeTab === tab ? "border-b-2 border-gray-900 text-gray-900" : "text-gray-500"}`}
-              onClick={() => setActiveTab(tab)}
-            >
-              <Icon className="mr-2 h-5 w-5" />
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </button>
-          ))}
+          <button
+            key={tab}
+            className={`flex items-center p-4 text-sm ${activeTab === tab ? "border-b-2 border-gray-900 text-gray-900" : "text-gray-500"}`}
+            onClick={() => setActiveTab(tab)}
+          >
+            <Icon className="mr-2 h-5 w-5" />
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
       </div>
       <div className="rounded-lg bg-white p-6 shadow-[0px_5px_10px_0px_rgba(0,0,0,0.03)]">
+
+
         {activeTab === "general" && (
-            <div>
+          <div>
             <h3 className="text-lg font-semibold">General Information</h3>
-            {adminData.map((data) => (
-              <div key={data.id}>
-                <p>{data.name}</p>
-                <p>{data.email}</p>
-                <p>{data.address}</p>
-                <p>{data.logo}</p>
-                {/* <Image src={data.logo} width="100" height="100"/> */}
-                <button onClick={() => openModal("general", data)} className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-700 transition duration-300">Edit</button>
+            {adminData.length === 0 ? (
+              <div>
+                <p>No data available.</p>
+                <button
+                  onClick={() => openModal("general")}
+                  className="mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-300"
+                >
+                  Add Data
+                </button>
               </div>
-            ))}
+            ) : (
+              adminData.map((data) => (
+                <div key={data.id}>
+                  <p>{data.name}</p>
+                  <p>{data.email}</p>
+                  <p>{data.address}</p>
+                  <p>{data.logo}</p>
+                  <button
+                    onClick={() => openModal("general", data)}
+                    className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-700 transition duration-300"
+                  >
+                    Edit
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         )}
 
@@ -294,20 +314,21 @@ const ProfileAdmin = () => {
       </div>
 
       {/* Modal component */}
+
       {isModalOpen && (
         <Modal
-          title={`${modalType}`}
+          title={`${modalType === "general" ? (editData ? "Edit General" : "Add General") : modalType}`}
           fields={fields}
           onSubmit={
             modalType === "general"
-            ? editData ? handleEditAdminData : () => {}
-            : modalType === "bankAccount"
-            ? editData ? handleEditAdminAccount : handleAddAdminAccount
-            : modalType === "contactPerson"
-            ? editData ? handleEditContactPerson : handleAddContactPerson
-            : modalType === "salesPerson"
-            ? editData ? handleEditSalesPerson : handleAddSalesPerson
-            : () => {}
+              ? handleEditAdminData
+              : modalType === "bankAccount"
+                ? editData ? handleEditAdminAccount : handleAddAdminAccount
+                : modalType === "contactPerson"
+                  ? editData ? handleEditContactPerson : handleAddContactPerson
+                  : modalType === "salesPerson"
+                    ? editData ? handleEditSalesPerson : handleAddSalesPerson
+                    : () => { }
           }
           onClose={closeModal}
           initialData={editData}
