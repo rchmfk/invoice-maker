@@ -17,7 +17,7 @@ import { auth } from "@/services/firebase";
 const menuItems = [
   { name: "Dashboard", icon: "home" },
   { name: "Invoice", icon: "document-text" },
-  { name: "Payment", icon: "credit-card" },
+  // { name: "Payment", icon: "credit-card" },
   { name: "Client", icon: "briefcase" },
   { name: "Profile", icon: "user-circle" },
   { name: "User", icon: "user-group" },
@@ -145,11 +145,11 @@ const SidebarAdmin = () => {
                       </li>
                       <li>
                         <a
-                          href="#"
+                          onClick={handleLogOut}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                          Sign out
+                          Log out
                         </a>
                       </li>
                     </ul>
