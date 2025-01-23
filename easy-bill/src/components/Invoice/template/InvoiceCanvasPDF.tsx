@@ -1,13 +1,11 @@
-"use client"
-import { useEffect, useState } from "react";
-import { Document, Page, Image as ImagePDF, Text, View } from "@react-pdf/renderer";
-import { styles } from "./InvoiceCanvasPDFStyle";
 import {
-  getInvoiceData,
-  getClientData,
-  getPaymentData,
-  getTableData
-} from "@/utils/firestoreAdmin";
+  Document,
+  Page,
+  Image as ImagePDF,
+  Text,
+  View,
+} from "@react-pdf/renderer";
+import { styles } from "./InvoiceCanvasPDFStyle";
 
 const InvoiceCanvasPDF = ({
   invoiceData,
@@ -24,7 +22,6 @@ const InvoiceCanvasPDF = ({
   table?: string;
   sections: any;
 }) => {
-  
   const renderHeadTemplate = () => {
     switch (head) {
       case "classic":
@@ -37,12 +34,12 @@ const InvoiceCanvasPDF = ({
                   style={styles.logoImage}
                 />
               </View>
-              <Text style={styles.companyName}>{invoiceData?.name || "-"}</Text>
+              <Text style={styles.companyName}>Panda, Inc</Text>
             </View>
             <View style={styles.addressContainer}>
-              <Text style={styles.addressText}>{invoiceData?.name || "-"}</Text>
-              <Text style={styles.addressText}>{invoiceData?.address || "-"}</Text>
-              {/* <Text style={styles.addressText}>TAX ID: 00XXXXX1234X0XX</Text> */}
+              <Text style={styles.addressText}>Business Address</Text>
+              <Text style={styles.addressText}>City, State, IN - 000000</Text>
+              <Text style={styles.addressText}>TAX ID: 00XXXXX1234X0XX</Text>
             </View>
           </View>
         );
@@ -57,17 +54,17 @@ const InvoiceCanvasPDF = ({
                 />
               </View>
               <View style={{ flexDirection: "column", gap: 4 }}>
-                <Text style={styles.companyName}>{invoiceData?.name || "-"}</Text>
-                <Text style={styles.contactInfo}>{invoiceData?.email || "-"}</Text>
+                <Text style={styles.companyName}>Panda, Inc</Text>
+                <Text style={styles.contactInfo}>hello@email.com</Text>
                 <Text style={styles.contactInfo}>+91 00000 00000</Text>
               </View>
             </View>
 
             {/* Right Section: Business Information */}
             <View style={{ flexDirection: "column", gap: 4 }}>
-              <Text style={styles.addressText}>{invoiceData?.address || "-"}</Text>
-              {/* <Text style={styles.addressText}>City, State, IN - 000000</Text> */}
-              {/* <Text style={styles.addressText}>TAX ID: 00XXXXX1234X0XX</Text> */}
+              <Text style={styles.addressText}>Business Address</Text>
+              <Text style={styles.addressText}>City, State, IN - 000000</Text>
+              <Text style={styles.addressText}>TAX ID: 00XXXXX1234X0XX</Text>
             </View>
           </View>
         );
@@ -82,8 +79,8 @@ const InvoiceCanvasPDF = ({
                 />
               </View>
               <View style={{ flexDirection: "column", gap: 4 }}>
-                <Text style={styles.minimalistCompanyName}>{invoiceData?.name || "-"}</Text>
-                <Text style={styles.contactInfo}>{invoiceData?.email || "-"}</Text>
+                <Text style={styles.minimalistCompanyName}>Panda, Inc</Text>
+                <Text style={styles.contactInfo}>hello@email.com</Text>
                 <Text style={styles.contactInfo}>+91 00000 00000</Text>
               </View>
             </View>
@@ -133,8 +130,8 @@ const InvoiceCanvasPDF = ({
                 style={styles.logoImage}
                 src="https://tse4.mm.bing.net/th?id=OIP.6m-imjlo6n01VaGlszCrOgHaE7&pid=Api&P=0&h=220"
               />
-              <Text style={styles.companyName}>{invoiceData?.name || "-"}</Text>
-              <Text style={styles.address}>{invoiceData?.address || "-"}</Text>
+              <Text style={styles.companyName}>Panda, Inc</Text>
+              <Text style={styles.address}>City, Country - 00000</Text>
               <Text style={styles.address}>TAX ID 00XXXXX1234X0XX</Text>
             </View>
           </View>
