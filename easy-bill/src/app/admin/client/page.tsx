@@ -36,6 +36,9 @@ export default function ClientAdminPage() {
   const [currentClientId, setCurrentClientId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+
   useEffect(() => {
     const fetchClients = async () => {
       const clientsList = await getClients();
@@ -113,6 +116,23 @@ export default function ClientAdminPage() {
     setDeleteModalIsOpen(true);
   };
 
+  const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
+    const paginatedClients = filteredClients.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+  
+    const handlePageChange = (page: number): void => {
+      setCurrentPage(page);
+    };
+  
+    const handleItemsPerPageChange = (
+      e: ChangeEvent<HTMLSelectElement>
+    ): void => {
+      setItemsPerPage(Number(e.target.value));
+      setCurrentPage(1);
+    };
+
   return (
     <>
       <div className="p-4 sm:ml-64">
@@ -183,7 +203,7 @@ export default function ClientAdminPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredClients.map((client, index) => (
+                  {paginatedClients.map((client, index) => (
                     <tr key={client.id}>
                       <td className="px-4 py-2 border">{index + 1}</td>
                       <td className="px-4 py-2 border">{client.name}</td>
@@ -202,6 +222,53 @@ export default function ClientAdminPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center mt-4">
+            <div>
+              <label htmlFor="items-per-page" className="text-sm text-gray-700">
+                Items per page:
+              </label>
+              <select
+                id="items-per-page"
+                value={itemsPerPage}
+                onChange={handleItemsPerPageChange}
+                className="border p-1 ml-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+              >
+                {[10, 15, 20, 30, 40, 50].map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <button
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+                className={`px-3 py-1 border rounded-md ${
+                  currentPage === 1
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "text-gray-700"
+                }`}
+              >
+                Previous
+              </button>
+              <span className="mx-2 text-sm text-gray-700">
+                {currentPage} of {totalPages}
+              </span>
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => handlePageChange(currentPage + 1)}
+                className={`px-3 py-1 border rounded-md ${
+                  currentPage === totalPages
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "text-gray-700"
+                }`}
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>
