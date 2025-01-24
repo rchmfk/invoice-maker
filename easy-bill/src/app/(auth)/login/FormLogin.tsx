@@ -30,36 +30,21 @@ const FormLogin = () => {
 
   const loginSubmit: SubmitHandler<FormLoginFields> = async (data) => {
     try {
-      // First, try to sign in with email and password
       const userCredential = await signInWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
-  
-      const user = userCredential.user;
-      const userId = user.uid;
-  
-      // Check Firestore to see if the user exists with the given userId
-      const userRef = doc(db, "users", userId);
-      const userDoc = await getDoc(userRef);
-  
-      if (userDoc.exists()) {
-        // User exists, proceed with login and routing
-        const userData = userDoc.data();
-        console.log("User found in Firestore:", userData);
-        
-        // Optionally, you can add additional checks here (e.g., user role, status)
-        router.push("/"); // Redirect to the homepage or dashboard
-      } else {
-        // User doesn't exist in Firestore, handle the error (e.g., show a message or create a new user)
-        console.log("User not found in Firestore.");
-        // You can display a message or take action accordingly, like logging the user out
-      }
+
+      // add something later on
+
+      router.push("/");
     } catch (error) {
-      console.error(`Error: ${error}`);
+      console?.error(`Error: ${error}`);
     }
   };
+
+  
 
   const loginGoogle = () => {
     signinWithGoogle()
