@@ -4,14 +4,23 @@ import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase
 import { db } from '@/services/firebase';
 import { BanknotesIcon, IdentificationIcon, LockClosedIcon, PaperClipIcon, PhoneIcon, UserCircleIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 // Modal component
-const Modal = ({ title, fields, onSubmit, onClose, initialData }) => {
+interface ModalProps {
+  title: string;
+  fields: { name: string; type: string; placeholder: string }[];
+  onSubmit: (data: any) => void;
+  onClose: () => void;
+  initialData?: any;
+}
+
+const Modal = ({ title, fields, onSubmit, onClose, initialData }: ModalProps) => {
   const [formData, setFormData] = useState(initialData || {});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
 
   const handleFormSubmit = (e) => {
@@ -216,7 +225,6 @@ const ProfileAdmin = () => {
         { tab: "bank account", Icon: BanknotesIcon },
         { tab: "contact person", Icon: PhoneIcon },
         { tab: "sales person", Icon: UserCircleIcon },
-        { tab: "password", Icon: LockClosedIcon }
         ].map(({ tab, Icon }) => (
           <button
             key={tab}
@@ -250,9 +258,9 @@ const ProfileAdmin = () => {
                       </span>
                     </div>
                   </div>
-                  </div>
                 </div>
-                ) : (
+              </div>
+            ) : (
               adminData.map((data) => (
                 <div key={data.id}>
                   <div className="px-4 sm:px-0">
@@ -314,84 +322,194 @@ const ProfileAdmin = () => {
                   </div>
                 </div>
 
-                ))
-            )}
-              </div>
-            )}
-
-            {activeTab === "bank account" && (
-              <div>
-                <h3 className="text-lg font-semibold">Bank Accounts</h3>
-                {adminAccounts.map((account) => (
-                  <div key={account.id}>
-                    <p>{account.name} - {account.bank} - {account.number}</p>
-                    <button onClick={() => openModal("bankAccount", account)} className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-700 transition duration-300">Edit</button>
-                    <button onClick={() => handleDeleteAdminAccount(account.id)} className="mt-2 px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-700 transition duration-300">Delete</button>
-                  </div>
-                ))}
-                <button onClick={() => openModal("bankAccount")} className="mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-300">Add Bank Account</button>
-              </div>
-            )}
-
-            {activeTab === "contact person" && (
-              <div>
-                <h3 className="text-lg font-semibold">Contact Persons</h3>
-                {contactPersons.map((person) => (
-                  <div key={person.id}>
-                    <p>{person.name} - {person.phoneNumber}</p>
-                    <button onClick={() => openModal("contactPerson", person)} className="mt-2 px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-700 transition duration-300">Edit</button>
-                    <button onClick={() => handleDeleteContactPerson(person.id)} className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700 transition duration-300">Delete</button>
-                  </div>
-                ))}
-                <button onClick={() => openModal("contactPerson")} className="mt-2 px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-700 transition duration-300">Add Contact Person</button>
-              </div>
-            )}
-
-            {activeTab === "sales person" && (
-              <div>
-                <h3 className="text-lg font-semibold">Sales Persons</h3>
-                {salesPersons.map((person) => (
-                  <div key={person.id}>
-                    <p>{person.name}</p>
-                    <button onClick={() => openModal("salesPerson", person)} className="mt-2 px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-700 transition duration-300">Edit</button>
-                    <button onClick={() => handleDeleteSalesPerson(person.id)} className="mt-2 px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-700 transition duration-300">Delete</button>
-                  </div>
-                ))}
-                <button onClick={() => openModal("salesPerson")} className="mt-2 px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-700 transition duration-300">Add Sales Person</button>
-              </div>
-            )}
-
-            {activeTab === "password" && (
-              <div>
-                <h3 className="text-lg font-semibold">Change Password</h3>
-                <p>Here you can change your password.</p>
-              </div>
+              ))
             )}
           </div>
+        )}
+
+        {activeTab === "bank account" && (
+          <div>
+            <div className="px-4 sm:px-0">
+              <div className="grid grid-cols-2 items-center">
+                <div>
+                  <h3 className="text-base/7 font-semibold text-gray-900">General Information</h3>
+                  <p className="mt-1 max-w-2xl text-sm/6 text-gray-500">Personal details</p>
+                </div>
+                <div className="text-right">
+                  <span
+                    onClick={() => openModal("bankAccount")}
+                    className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset cursor-pointer"
+                  >
+                    <PlusIcon className="h-4 w-4 mr-1" aria-hidden="true" />
+                    Add Bank Account
+                  </span>
+                </div>
+              </div>
+            </div>
+            {adminAccounts.map((account) => (
+              <div key={account.id} className="mt-6 border-t border-gray-100">
+                <dl className="divide-y divide-gray-100">
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium text-gray-900">
+                      <p className="font-bold">{account.name}</p>
+                      <p>{account.bank}</p>
+                      <p>{account.number}</p>
+                    </dt>
+                    <dd className="mt-1 text-right text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      <span
+                        onClick={() => openModal("bankAccount", account)}
+                        className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset cursor-pointer"
+                      >
+                        <PencilIcon className="h-4 w-4 mr-1" aria-hidden="true" />
+                        Edit
+                      </span>
+                      <span
+                        onClick={() => handleDeleteAdminAccount(account.id)}
+                        className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset cursor-pointer"
+                      >
+                        <TrashIcon className="h-4 w-4 mr-1" aria-hidden="true" />
+                        Delete
+                      </span>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === "contact person" && (
+          <div>
+            <div className="px-4 sm:px-0">
+              <div className="grid grid-cols-2 items-center">
+                <div>
+                  <h3 className="text-base/7 font-semibold text-gray-900">Contact Person</h3>
+                  <p className="mt-1 max-w-2xl text-sm/6 text-gray-500">Personal details</p>
+                </div>
+                <div className="text-right">
+                  <span
+                    onClick={() => openModal("contactPerson")}
+                    className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset cursor-pointer"
+                  >
+                    <PlusIcon className="h-4 w-4 mr-1" aria-hidden="true" />
+                    Add Contact Person
+                  </span>
+                </div>
+              </div>
+            </div>
+            {contactPersons.map((person) => (
+
+              <div key={person.id} className="mt-6 border-t border-gray-100">
+                <dl className="divide-y divide-gray-100">
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium text-gray-900">
+                      <p className="font-bold">{person.name}</p>
+                      <p>{person.phoneNumber}</p>
+                    </dt>
+                    <dd className="mt-1 text-right text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      <span
+                        onClick={() => openModal("contactPerson", person)}
+                        className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset cursor-pointer"
+                      >
+                        <PencilIcon className="h-4 w-4 mr-1" aria-hidden="true" />
+                        Edit
+                      </span>
+                      <span
+                        onClick={() => handleDeleteContactPerson(person.id)}
+                        className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset cursor-pointer"
+                      >
+                        <TrashIcon className="h-4 w-4 mr-1" aria-hidden="true" />
+                        Delete
+                      </span>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === "sales person" && (
+          <div>
+            <div className="px-4 sm:px-0">
+              <div className="grid grid-cols-2 items-center">
+                <div>
+                  <h3 className="text-base/7 font-semibold text-gray-900">Sales Person</h3>
+                  <p className="mt-1 max-w-2xl text-sm/6 text-gray-500">Personal details</p>
+                </div>
+                <div className="text-right">
+                  <span
+                    onClick={() => openModal("salesPerson")}
+                    className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset cursor-pointer"
+                  >
+                    <PlusIcon className="h-4 w-4 mr-1" aria-hidden="true" />
+                    Add Sales Person
+                  </span>
+                </div>
+              </div>
+            </div>
+            {salesPersons.map((person) => (
+              <div key={person.id} className="mt-6 border-t border-gray-100">
+                <dl className="divide-y divide-gray-100">
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium text-gray-900">
+                      <p className="font-bold">{person.name}</p>
+                      <p>{person.phoneNumber}</p>
+                    </dt>
+                    <dd className="mt-1 text-right text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      <span
+                        onClick={() => openModal("salesPerson", person)}
+                        className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset cursor-pointer"
+                      >
+                        <PencilIcon className="h-4 w-4 mr-1" aria-hidden="true" />
+                        Edit
+                      </span>
+                      <span
+                        onClick={() => handleDeleteSalesPerson(person.id)}
+                        className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset cursor-pointer"
+                      >
+                        <TrashIcon className="h-4 w-4 mr-1" aria-hidden="true" />
+                        Delete
+                      </span>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === "password" && (
+          <div>
+            <h3 className="text-lg font-semibold">Change Password</h3>
+            <p>Here you can change your password.</p>
+          </div>
+        )}
+      </div>
 
       {/* Modal component */}
 
-        {isModalOpen && (
-          <Modal
-            title={`${modalType === "general" ? (editData ? "Edit General" : "Add General") : modalType}`}
-            fields={fields}
-            onSubmit={
-              modalType === "general"
-                ? handleEditAdminData
-                : modalType === "bankAccount"
-                  ? editData ? handleEditAdminAccount : handleAddAdminAccount
-                  : modalType === "contactPerson"
-                    ? editData ? handleEditContactPerson : handleAddContactPerson
-                    : modalType === "salesPerson"
-                      ? editData ? handleEditSalesPerson : handleAddSalesPerson
-                      : () => { }
-            }
-            onClose={closeModal}
-            initialData={editData}
-          />
-        )}
-      </>
-      );
+      {isModalOpen && (
+        <Modal
+          title={`${modalType === "general" ? (editData ? "Edit General" : "Add General") : modalType}`}
+          fields={fields}
+          onSubmit={
+            modalType === "general"
+              ? handleEditAdminData
+              : modalType === "bankAccount"
+                ? editData ? handleEditAdminAccount : handleAddAdminAccount
+                : modalType === "contactPerson"
+                  ? editData ? handleEditContactPerson : handleAddContactPerson
+                  : modalType === "salesPerson"
+                    ? editData ? handleEditSalesPerson : handleAddSalesPerson
+                    : () => { }
+          }
+          onClose={closeModal}
+          initialData={editData}
+        />
+      )}
+    </>
+  );
 };
 
-      export default ProfileAdmin;
+export default ProfileAdmin;
