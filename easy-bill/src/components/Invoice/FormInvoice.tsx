@@ -39,7 +39,7 @@ const FormInvoice = () => {
   const clientInfoValue = searchParams.get("client");
   const tableValue = searchParams.get("table");
   const paymentInfoValue = searchParams.get("payment");
-  const { setInvoiceData } = useInvoiceStore((state) => state);
+  const { setInvoiceData, invoiceData } = useInvoiceStore((state) => state);
 
   const {
     control,
@@ -72,13 +72,11 @@ const FormInvoice = () => {
     name: "items",
   });
 
-
   const additionalDiscount = useWatch({
     control,
     name: "additionalDiscount",
     defaultValue: "",
   });
-
 
   const shippingCost = useWatch({
     control,
@@ -96,9 +94,11 @@ const FormInvoice = () => {
     shippingCost: Number(shippingCost || 0),
   });
 
-  const onSubmit: SubmitHandler<InvoiceFormValues> = (data) => {
-    useCreateInvoice(data, setInvoiceData);
+  const onSubmit: SubmitHandler<InvoiceFormValues> = async (data) => {
+    await useCreateInvoice(data);
+
     handleSwitchPageTypeTemplate();
+    
   };
 
   const handleSwitchPageTypeTemplate = () => {
@@ -136,22 +136,22 @@ const FormInvoice = () => {
   const handleNext = () => {
     handleSwitchPageTypeTemplate();
   };
-
+  
   const handleView = () => {
     if (step !== "view") {
       const queryParams = new URLSearchParams();
-
+  
       queryParams.append("step", "view");
       if (headValue) queryParams.append("head", headValue);
       if (clientInfoValue) queryParams.append("client", clientInfoValue);
       if (tableValue) queryParams.append("table", tableValue);
       if (paymentInfoValue) queryParams.append("payment", paymentInfoValue);
-
+  
       router.push(`?${queryParams.toString()}`);
     } else {
       router.back();
     }
-  };
+    }
 
   return (
     <div className="flex flex-col gap-8">
@@ -265,16 +265,18 @@ const FormInvoice = () => {
                       placeholder="%"
                       register={register}
                     />
-                    <InputInvoice
-                      id={`items[${index}].price`}
-                      label="Price"
-                      type="number"
-                      placeholder="0"
-                      register={register}
-                    />
-                    <button type="button" onClick={() => remove(index)}>
-                      <TrashIcon className="size-5 text-red-500" />
-                    </button>
+                    <div className="flex items-center gap-4">
+                      <InputInvoice
+                        id={`items[${index}].price`}
+                        label="Price"
+                        type="number"
+                        placeholder="0"
+                        register={register}
+                      />
+                      <button type="button" onClick={() => remove(index)}>
+                        <TrashIcon className="size-5 text-red-500" />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -289,11 +291,11 @@ const FormInvoice = () => {
             <div className="max-w-[300px] mt-6 flex flex-col gap-3 w-full">
               <p className="flex items-center gap-4 justify-between">
                 <span className="text-sm text-gray-600">Sub Total </span>
-                <span> Rp{formatNumber(10000000)}</span>
+                <span> Rp{formatNumber("1000000")}</span>
               </p>
               <p className="flex items-center gap-4 justify-between">
                 <span className="text-sm text-gray-600">Discount Total </span>
-                <span> Rp{formatNumber(2000000)}</span>
+                <span> Rp{formatNumber("2000000")}</span>
               </p>
               <div className="flex items-center gap-4 justify-between">
                 <p className="text-sm text-gray-600">Additional Discount</p>
@@ -323,7 +325,7 @@ const FormInvoice = () => {
               </div>
               <p className="flex items-center gap-4 justify-between">
                 <span className="text-sm text-gray-600">Total </span>
-                <span className="font-semibold"> Rp{formatNumber(total)}</span>
+                <span className="font-semibold"> Rp{formatNumber(String(total))}</span>
               </p>
             </div>
           </div>

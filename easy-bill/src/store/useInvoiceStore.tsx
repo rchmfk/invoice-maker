@@ -17,11 +17,11 @@ export interface InvoiceData {
 }
 
 interface InvoiceStore {
-  invoiceData: InvoiceData | null;
-  setInvoiceData: (data: InvoiceData) => void;
+  invoiceData: string;
+  setInvoiceData: (data: string | any) => void;
 }
 
 export const useInvoiceStore = create<InvoiceStore>((set) => ({
-  invoiceData: null,
-  setInvoiceData: (data) => set({ invoiceData: data }),
+  invoiceData: "",
+  setInvoiceData: (data: string | any) => set({ invoiceData: data }),
 }));

@@ -11,6 +11,8 @@ const Payment = () => {
   const selectedClientInfo = searchParams.get("client") as string;
   const selectedTableInfo = searchParams.get("table") as string;
   const selectedPaymentInfo = searchParams.get("payment") as string;
+  const selectedInvoiceId = searchParams.get("invoiceId") as string;
+  
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedValue = event.target.value;
@@ -22,6 +24,8 @@ const Payment = () => {
     if (selectedClientInfo) queryParams.append("client", selectedClientInfo);
     if (selectedTableInfo) queryParams.append("table", selectedTableInfo);
     if (selectedValue) queryParams.append("payment", selectedValue);
+    if (selectedInvoiceId) queryParams.append("invoiceId", selectedInvoiceId);
+
   
     router.push(`?${queryParams.toString()}`, { scroll: false });
   };

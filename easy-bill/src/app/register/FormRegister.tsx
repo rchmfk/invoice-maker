@@ -12,11 +12,9 @@ import { auth, signinWithGoogle } from "@/services/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Google from "@/public/google.png";
-import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 const FormRegister = () => {
   const router = useRouter();
-  useProtectedRoute("Client");
   const {
     register,
     handleSubmit,

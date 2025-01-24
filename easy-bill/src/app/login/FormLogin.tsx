@@ -12,10 +12,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, signinWithGoogle } from "@/services/firebase";
 import { useRouter } from "next/navigation";
 import { useAddUser } from "@/hooks/useAddUser";
-import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 const FormLogin = () => {
-  useProtectedRoute("Client");
   const router = useRouter();
 
   const {
@@ -52,7 +50,7 @@ const FormLogin = () => {
           userId: result.user.uid,
           phoneNumber: result.user.phoneNumber,
           address: "",
-          role: "Client",
+          role: "Admin",
         };
 
         useAddUser(userData);

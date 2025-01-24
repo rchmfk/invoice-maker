@@ -3,9 +3,9 @@ import React, { Dispatch, SetStateAction } from "react";
 type ModalProps = {
   showDeleteInvoiceModal: boolean;
   setShowDeleteInvoiceModal: Dispatch<SetStateAction<boolean>>;
-  handleDelete: (invoiceId: number | any) => void;
-  selectedInvoiceId: number | null
-  setInvoiceId: (invoiceId: number | null) => void;
+  handleDelete: (invoiceId: string | any) => void;
+  selectedInvoiceId: string | null
+  setInvoiceId: (invoiceId: string | null) => void;
 };
 
 const ModalDeleteInvoiceAdmin = ({

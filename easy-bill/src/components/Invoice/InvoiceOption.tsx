@@ -125,7 +125,7 @@ const InvoiceOption = () => {
           <input
             type="text"
             className="w-full py-4 border border-black/20 rounded-lg pl-12 pr-4"
-            placeholder="Search..."
+            placeholder="Search client..."
             required
             value={searchInvoice}
             onChange={(e) => handleSearchChange(e.target.value)}

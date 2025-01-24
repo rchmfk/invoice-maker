@@ -6,6 +6,7 @@ import { fetchInvoices } from "./action";
 
 export default async function InvoiceAdminPage() {
   const invoiceDatas = await fetchInvoices()
+  
   return (
     <>
       <div className="p-4 sm:ml-64">
@@ -52,8 +53,7 @@ export default async function InvoiceAdminPage() {
           <div className="flex items-center justify-center mb-4 rounded">
             <div className="flex flex-col rounded-lg bg-white shadow-[0px_5px_10px_0px_rgba(0,0,0,0.03)] mt-10 gap-2 w-full">
               <InvoiceOption />
-              <InvoiceList />
-              {/* Pagination */}
+              <InvoiceList invoiceDatas={invoiceDatas} />
             </div>
           </div>
         </div>

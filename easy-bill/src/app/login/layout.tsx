@@ -2,10 +2,9 @@ import ClientRouteGuard from "@/components/ClientRouteGuard";
 import SidebarClient from "@/components/SidebarClient";
 import { ReactNode } from "react";
 
-const ClientLayout = ({ children }: { children: ReactNode }) => {
+const LoginLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div style={{ display: "flex" }}>
-      <SidebarClient />
       <div style={{ flex: 1 }}>
         <main>
           <ClientRouteGuard>{children}</ClientRouteGuard>
@@ -15,4 +14,4 @@ const ClientLayout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default ClientLayout;
+export default LoginLayout;

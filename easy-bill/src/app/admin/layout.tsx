@@ -9,9 +9,9 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
       <SidebarAdmin/>
       <div style={{ flex: 1 }}>
         <main>
-          <AdminRouteGuard>
+          {/* <AdminRouteGuard> */}
           {children}
-          </AdminRouteGuard>
+          {/* </AdminRouteGuard> */}
         </main>
       </div>
     </div>
