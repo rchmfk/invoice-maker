@@ -108,31 +108,30 @@ const UserManagement: React.FC = () => {
 
   const handleAddUserSubmit = async (e: FormEvent): void => {
     e.preventDefault();
-  
+
     if (popupForm.password !== popupForm.confirmPassword) {
       alert("Password and Confirm Password must match.");
       return;
     }
-  
+
     const auth = getAuth();
-  
+
     try {
       if (editingUserId) {
         // Editing an existing user
         const userRef = doc(db, "users", editingUserId);
-  
+
         await setDoc(
           userRef,
           {
             name: popupForm.name,
-            email: popupForm.email,
             role: popupForm.role,
             address: popupForm.address,
             phoneNumber: popupForm.phoneNumber,
           },
           { merge: true } // Merge the updated data with existing data
         );
-  
+
         alert("User updated successfully!");
       } else {
         // Adding a new user
@@ -141,9 +140,9 @@ const UserManagement: React.FC = () => {
           popupForm.email,
           popupForm.password
         );
-  
+
         const userId = userCredential.user.uid;
-  
+
         await addDoc(collection(db, "users"), {
           userId: userId,
           name: popupForm.name,
@@ -152,10 +151,10 @@ const UserManagement: React.FC = () => {
           address: popupForm.address,
           phoneNumber: popupForm.phoneNumber,
         });
-  
+
         alert("User created successfully!");
       }
-  
+
       // Reset form and state
       setPopupForm({
         name: "",
@@ -306,10 +305,10 @@ const UserManagement: React.FC = () => {
                       <td className="border p-2 text-center">
                         <span
                           className={`px-2 py-1 rounded text-white text-sm ${user.role === "Admin"
-                              ? "bg-green-500"
-                              : user.role === "Client"
-                                ? "bg-yellow-500"
-                                : "bg-blue-500"
+                            ? "bg-green-500"
+                            : user.role === "Client"
+                              ? "bg-yellow-500"
+                              : "bg-blue-500"
                             }`}
                         >
                           {user.role}
@@ -389,8 +388,8 @@ const UserManagement: React.FC = () => {
                 disabled={currentPage === 1}
                 onClick={() => handlePageChange(currentPage - 1)}
                 className={`px-3 py-1 border rounded-md ${currentPage === 1
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "text-gray-700"
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-gray-700"
                   }`}
               >
                 Previous
@@ -402,8 +401,8 @@ const UserManagement: React.FC = () => {
                 disabled={currentPage === totalPages}
                 onClick={() => handlePageChange(currentPage + 1)}
                 className={`px-3 py-1 border rounded-md ${currentPage === totalPages
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "text-gray-700"
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-gray-700"
                   }`}
               >
                 Next
@@ -413,167 +412,167 @@ const UserManagement: React.FC = () => {
 
           {isAddUserPopupOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md">
-              <h2 className="text-xl font-bold mb-4">
-                {editingUserId ? "Edit User" : "Add New User"}
-              </h2>
-              <form onSubmit={handleAddUserSubmit}>
-                <div className="mb-4">
-                  <label htmlFor="name" className="block text-sm text-gray-700">
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    value={popupForm.name}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setPopupForm((prev) => ({
-                        ...prev,
-                        name: e.target.value,
-                      }))
-                    }
-                    className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="email" className="block text-sm text-gray-700">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    value={popupForm.email}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setPopupForm((prev) => ({
-                        ...prev,
-                        email: e.target.value,
-                      }))
-                    }
-                    className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
-                    required
-                  />
-                </div>
-          
-                {/* Conditional rendering for password and confirm password fields */}
-                {!editingUserId && (
-                  <>
-                    <div className="mb-4">
-                      <label htmlFor="password" className="block text-sm text-gray-700">
-                        Password
-                      </label>
-                      <input
-                        id="password"
-                        type="password"
-                        value={popupForm.password}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          setPopupForm((prev) => ({
-                            ...prev,
-                            password: e.target.value,
-                          }))
-                        }
-                        className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
-                        required
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label
-                        htmlFor="confirmPassword"
-                        className="block text-sm text-gray-700"
-                      >
-                        Confirm Password
-                      </label>
-                      <input
-                        id="confirmPassword"
-                        type="password"
-                        value={popupForm.confirmPassword}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          setPopupForm((prev) => ({
-                            ...prev,
-                            confirmPassword: e.target.value,
-                          }))
-                        }
-                        className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
-                        required
-                      />
-                    </div>
-                  </>
-                )}
-          
-                <div className="mb-4">
-                  <label htmlFor="role" className="block text-sm text-gray-700">
-                    Role
-                  </label>
-                  <select
-                    id="role"
-                    value={popupForm.role}
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                      setPopupForm((prev) => ({
-                        ...prev,
-                        role: e.target.value,
-                      }))
-                    }
-                    className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
-                  >
-                    <option value="Client">Client</option>
-                    <option value="Admin">Admin</option>
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="address" className="block text-sm text-gray-700">
-                    Address
-                  </label>
-                  <input
-                    id="address"
-                    type="text"
-                    value={popupForm.address}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setPopupForm((prev) => ({
-                        ...prev,
-                        address: e.target.value,
-                      }))
-                    }
-                    className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="phoneNumber" className="block text-sm text-gray-700">
-                    Phone Number
-                  </label>
-                  <input
-                    id="phoneNumber"
-                    type="text"
-                    value={popupForm.phoneNumber}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setPopupForm((prev) => ({
-                        ...prev,
-                        phoneNumber: e.target.value,
-                      }))
-                    }
-                    className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
-                  />
-                </div>
-                <div className="flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAddUserPopupOpen(false);
-                      setEditingUserId(null);
-                    }}
-                    className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-sm"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md text-sm"
-                  >
-                    {editingUserId ? "Save Changes" : "Add User"}
-                  </button>
-                </div>
-              </form>
+              <div className="bg-white rounded-lg p-6 w-full max-w-md">
+                <h2 className="text-xl font-bold mb-4">
+                  {editingUserId ? "Edit User" : "Add New User"}
+                </h2>
+                <form onSubmit={handleAddUserSubmit}>
+                  <div className="mb-4">
+                    <label htmlFor="name" className="block text-sm text-gray-700">
+                      Name
+                    </label>
+                    <input
+                      id="name"
+                      type="text"
+                      value={popupForm.name}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setPopupForm((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                      className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+                      required
+                    />
+                  </div>
+
+                  {/* Conditional rendering for password and confirm password fields */}
+                  {!editingUserId && (
+                    <>
+                      <div className="mb-4">
+                        <label htmlFor="email" className="block text-sm text-gray-700">
+                          Email
+                        </label>
+                        <input
+                          id="email"
+                          type="email"
+                          value={popupForm.email}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            setPopupForm((prev) => ({
+                              ...prev,
+                              email: e.target.value,
+                            }))
+                          }
+                          className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+                          required
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label htmlFor="password" className="block text-sm text-gray-700">
+                          Password
+                        </label>
+                        <input
+                          id="password"
+                          type="password"
+                          value={popupForm.password}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            setPopupForm((prev) => ({
+                              ...prev,
+                              password: e.target.value,
+                            }))
+                          }
+                          className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+                          required
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          htmlFor="confirmPassword"
+                          className="block text-sm text-gray-700"
+                        >
+                          Confirm Password
+                        </label>
+                        <input
+                          id="confirmPassword"
+                          type="password"
+                          value={popupForm.confirmPassword}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            setPopupForm((prev) => ({
+                              ...prev,
+                              confirmPassword: e.target.value,
+                            }))
+                          }
+                          className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+                          required
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  <div className="mb-4">
+                    <label htmlFor="role" className="block text-sm text-gray-700">
+                      Role
+                    </label>
+                    <select
+                      id="role"
+                      value={popupForm.role}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                        setPopupForm((prev) => ({
+                          ...prev,
+                          role: e.target.value,
+                        }))
+                      }
+                      className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+                    >
+                      <option value="Client">Client</option>
+                      <option value="Admin">Admin</option>
+                    </select>
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="address" className="block text-sm text-gray-700">
+                      Address
+                    </label>
+                    <input
+                      id="address"
+                      type="text"
+                      value={popupForm.address}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setPopupForm((prev) => ({
+                          ...prev,
+                          address: e.target.value,
+                        }))
+                      }
+                      className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="phoneNumber" className="block text-sm text-gray-700">
+                      Phone Number
+                    </label>
+                    <input
+                      id="phoneNumber"
+                      type="text"
+                      value={popupForm.phoneNumber}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setPopupForm((prev) => ({
+                          ...prev,
+                          phoneNumber: e.target.value,
+                        }))
+                      }
+                      className="w-full border p-2 rounded-md shadow-sm focus:ring focus:ring-green-300"
+                    />
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAddUserPopupOpen(false);
+                        setEditingUserId(null);
+                      }}
+                      className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-sm"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md text-sm"
+                    >
+                      {editingUserId ? "Save Changes" : "Add User"}
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
           )}
         </div>
       </div>
