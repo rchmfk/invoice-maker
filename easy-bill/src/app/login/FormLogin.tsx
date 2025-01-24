@@ -8,8 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Google from "@/public/google.png";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, signinWithGoogle } from "@/services/firebase";
+import { signinWithGoogle } from "@/services/firebase";
 import { useRouter } from "next/navigation";
 import { useAddUser } from "@/hooks/useAddUser";
 
@@ -25,7 +24,7 @@ const FormLogin = () => {
     resolver: zodResolver(formLoginSchema),
   });
 
-  const loginSubmit: SubmitHandler<FormLoginFields> = async (data) => {
+  const loginSubmit: SubmitHandler<FormLoginFields> = async () => {
     try {
       // const userCredential = await signInWithEmailAndPassword(
       //   auth,
@@ -151,7 +150,7 @@ const FormLogin = () => {
           </div>
         </div>
         <div className="text-sm">
-          Don't have an account?{" "}
+          Dont have an account?{" "}
           <Link href={"/register"} className="text-blue-500 hover:underline">
             Create Account
           </Link>

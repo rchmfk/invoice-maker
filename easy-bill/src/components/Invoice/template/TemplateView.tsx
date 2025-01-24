@@ -9,7 +9,7 @@ import useSaveTemplateDB from "@/hooks/useSaveTemplateDB";
 import { useInvoiceStore } from "@/store/useInvoiceStore";
 
 const TemplateView = () => {
-  const invoiceData = useInvoiceStore((state) => state.invoiceData);
+  const invoiceData = useInvoiceStore((state) => state.invoiceData as { invoiceId: string });
   const {
     handleDragEnd,
     sections,
