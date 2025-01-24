@@ -181,8 +181,8 @@ const FormRegister = () => {
           {...register("role")}
           className="py-2 px-4 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
         >
-          <option value="USER">User</option>
-          <option value="ADMIN">Admin</option>
+          <option value="Client">Client</option>
+          <option value="Admin">Admin</option>
         </select>
         {errors.role && (
           <div className="text-red-500 text-sm">{errors.role.message}</div>

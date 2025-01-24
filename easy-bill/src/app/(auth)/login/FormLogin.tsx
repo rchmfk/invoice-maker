@@ -16,7 +16,7 @@ import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const FormLogin = () => {
-  useProtectedRoute("Client");
+  // useProtectedRoute("Client");
   const router = useRouter();
 
   const {
@@ -30,6 +30,7 @@ const FormLogin = () => {
 
   const loginSubmit: SubmitHandler<FormLoginFields> = async (data) => {
     try {
+      console.log(data)
       const userCredential = await signInWithEmailAndPassword(
         auth,
         data.email,
