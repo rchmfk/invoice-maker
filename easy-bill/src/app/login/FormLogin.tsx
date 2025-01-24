@@ -27,7 +27,6 @@ const FormLogin = () => {
 
   const loginSubmit: SubmitHandler<FormLoginFields> = async (data) => {
     try {
-      console.log(data)
       const userCredential = await signInWithEmailAndPassword(
         auth,
         data.email,
@@ -42,8 +41,6 @@ const FormLogin = () => {
     }
   };
 
-  
-
   const loginGoogle = () => {
     signinWithGoogle()
       .then((result) => {
@@ -56,27 +53,11 @@ const FormLogin = () => {
           role: "Admin",
         };
 
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          console.log("User found in Firestore:", userData);
-          router.push("/");
-        } else {
-          const newUser = {
-            name: user.displayName,
-            email: user.email,
-            userId: user.uid,
-            phoneNumber: user.phoneNumber || "",
-            address: "",
-            role: "Client",
-          };
-
-          await setDoc(userRef, newUser);
-
-          router.push("/client");
-        }
+        useAddUser(userData);
+        // router.push("/")
       })
       .catch((error) => {
-        console.error(`Error during Google sign-in: ${error.message}`);
+        console.error(`Error: ${error.message}`);
       });
   };
 
@@ -90,43 +71,67 @@ const FormLogin = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(loginSubmit)} className="space-y-4 md:space-y-6" action="#">
-        {/* <div>
-          <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-            Name</label>
-          <input type="text" id="name"
-            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="John" {...register("name")} />
+      <form
+        onSubmit={handleSubmit(loginSubmit)}
+        className="flex flex-col space-y-4 mt-4"
+      >
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="name">Your Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="John"
+            className="py-2 px-4 border border-black/20 rounded-md"
+            {...register("name")}
+          />
           {errors.name && (
             <div className="text-red-500 text-sm">{errors.name.message}</div>
           )}
-        </div> */}
-        <div>
-          <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-            email</label>
-          <input type="email" id="email"
-            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="name@company.com" {...register("email")} />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="email">Your Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="example@gmail.com"
+            className="py-2 px-4 border border-black/20 rounded-md"
+            {...register("email")}
+          />
           {errors.email && (
             <div className="text-red-500 text-sm">{errors.email.message}</div>
           )}
         </div>
-        <div>
-          <label htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-          <input type="password" id="password" placeholder="••••••••"
-            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            {...register("password")} />
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="password">Your Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="*********"
+            className="py-2 px-4 border border-black/20 rounded-md"
+            {...register("password")}
+          />
           {errors.password && (
             <div className="text-red-500 text-sm">
               {errors.password.message}
             </div>
           )}
         </div>
-        <button disabled={isSubmitting} type="submit"
-          className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-          {isSubmitting ? "Loading..." : "Login"}
-        </button>
+        <div className="flex gap-4 items-center">
+          <button
+            type="button"
+            className="bg-blue-50 max-w-[100px] w-full rounded-md hover:bg-blue-100 transition text-blue-800 hover:text-blue-900 py-2"
+            onClick={handleClearForm}
+          >
+            Clear
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-blue-800 max-w-[100px] w-full rounded-md hover:bg-blue-900 transition text-blue-50 hover:text-blue-100 py-2"
+          >
+            {isSubmitting ? "Loading..." : "Login"}
+          </button>
+        </div>
         <div className="flex flex-col items-center justify-center my-2">
           <div className="w-full relative flex items-center justify-center">
             <p className="text-center bg-white p-2 z-10 static text-gray-600">
