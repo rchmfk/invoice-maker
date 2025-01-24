@@ -2,42 +2,58 @@
 
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { db } from "@/services/firebase"; // Import firestore
+import {
+  collection,
+  getDocs,
+} from "firebase/firestore";
 
 interface Invoice {
-  id: number;
-  number: string;
+  id: string;
+  invoiceNo: string;
   total: string;
   status: string;
   salesPerson: string;
 }
 
-const invoices: Invoice[] = [
-  { id: 1, number: "#000001", total: "1.300.000", status: "Unpaid", salesPerson: "John Doe" },
-  { id: 2, number: "#000002", total: "2.300.000", status: "Unpaid", salesPerson: "Jane Smith" },
-  { id: 3, number: "#000003", total: "3.300.000", status: "Over Due", salesPerson: "John Doe" },
-  { id: 4, number: "#000004", total: "4.300.000", status: "Verification Process", salesPerson: "Alice Green" },
-  { id: 5, number: "#000005", total: "5.300.000", status: "Payment Verified", salesPerson: "Bob Brown" },
-  { id: 6, number: "#000006", total: "6.300.000", status: "Payment Verified", salesPerson: "Jane Smith" },
-  { id: 7, number: "#000007", total: "7.300.000", status: "Unpaid", salesPerson: "John Doe" },
-  { id: 8, number: "#000008", total: "8.300.000", status: "Over Due", salesPerson: "Alice Green" },
-  { id: 9, number: "#000009", total: "9.300.000", status: "Payment Verified", salesPerson: "Jane Smith" },
-  { id: 10, number: "#000010", total: "10.300.000", status: "Verification Process", salesPerson: "Bob Brown" },
-];
-
 const ClientInvoice = () => {
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [salesPersons, setSalesPersons] = useState<string[]>(["All"]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedSalesPerson, setSelectedSalesPerson] = useState<string>("All");
   const [selectedPaymentStatus, setSelectedPaymentStatus] = useState<string>("All");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10); 
   const [showPopup, setShowPopup] = useState<boolean>(false);
-  const itemsPerPage = 5;
 
-  const salesPersons: string[] = ["All", "John Doe", "Jane Smith", "Alice Green", "Bob Brown"];
   const paymentStatuses: string[] = ["All", "Unpaid", "Over Due", "Verification Process", "Payment Verified"];
+  const itemsPerPageOptions = [10, 15, 20, 30]; 
+
+  // Fetch invoices and sales persons from Firestore when component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      // Fetch invoices
+      const invoicesCollection = collection(db, "invoices");
+      const invoiceSnapshot = await getDocs(invoicesCollection);
+      const invoiceList = invoiceSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setInvoices(invoiceList as Invoice[]);
+
+      // Fetch salespersons
+      const salesPersonsCollection = collection(db, "admin_sales_person");
+      const salesPersonSnapshot = await getDocs(salesPersonsCollection);
+      const salesPersonList = salesPersonSnapshot.docs.map((doc) => doc.data().name);  // Assuming each document has a 'name' field
+      setSalesPersons(["All", ...salesPersonList]); // Include 'All' as the first option
+    };
+
+    fetchData();
+  }, []);
 
   const filteredInvoices = invoices.filter((invoice) => {
-    const matchesSearchQuery = searchQuery === "" || invoice.number.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearchQuery = searchQuery === "" || invoice.invoiceNo.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesSalesPerson = selectedSalesPerson === "All" || invoice.salesPerson === selectedSalesPerson;
     const matchesPaymentStatus = selectedPaymentStatus === "All" || invoice.status === selectedPaymentStatus;
 
@@ -121,6 +137,22 @@ const ClientInvoice = () => {
           </div>
         </div>
 
+        {/* Items Per Page Selector */}
+        <div className="mb-4 flex items-center gap-2">
+          <span className="text-sm text-gray-500">Items per page:</span>
+          <select
+            className="px-3 py-2 border border-gray-300 rounded-md bg-white text-sm text-gray-700"
+            value={itemsPerPage}
+            onChange={(e) => setItemsPerPage(Number(e.target.value))}
+          >
+            {itemsPerPageOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Result Count */}
         <div className="mb-4 text-sm text-gray-500">{filteredInvoices.length} results found</div>
 
@@ -150,39 +182,44 @@ const ClientInvoice = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedInvoices.map((invoice) => (
-                <tr key={invoice.id} className="border-b hover:bg-gray-50">
-                  <td className="px-6 py-4">{invoice.id}</td>
-                  <td className="px-6 py-4">{invoice.number}</td>
-                  <td className="px-6 py-4">{invoice.salesPerson}</td>
-                  <td className="px-6 py-4">{invoice.total}</td>
-                  <td className="px-6 py-4">
-                    <div>
-                      <span
-                        className={`px-2 py-1 rounded text-xs ${
-                          invoice.status === "Unpaid"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : invoice.status === "Over Due"
-                              ? "bg-red-100 text-red-700"
-                              : invoice.status === "Verification Process"
-                                ? "bg-blue-100 text-blue-700"
-                                : "bg-green-100 text-green-700"
-                        }`}
-                      >
-                        {invoice.status}
-                      </span>
-                      {invoice.status === "Unpaid" && (
-                        <button onClick={handleProceedPayment} className="mt-3 ml-5 px-3 py-2 text-sm text-white bg-black rounded hover:bg-gray-800">
-                          Proceed Payment
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <button className="text-purple-700 underline">View</button>
-                  </td>
-                </tr>
-              ))}
+              {paginatedInvoices.map((invoice, index) => {
+                // Handle empty, null, or undefined status
+                const status = invoice.status ?? "Drafted"; // Default to "Drafted" if status is null or undefined
+                return (
+                  <tr key={invoice.id} className="border-b hover:bg-gray-50">
+                    <td className="px-6 py-4">{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                    <td className="px-6 py-4">{invoice.invoiceNo}</td>
+                    <td className="px-6 py-4">{invoice.salesPerson}</td>
+                    <td className="px-6 py-4">{invoice.total}</td>
+                    <td className="px-6 py-4">
+                      <div>
+                        <span
+                          className={`px-2 py-1 rounded text-xs ${status === "Unpaid"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : status === "Over Due"
+                                ? "bg-red-100 text-red-700"
+                                : status === "Verification Process"
+                                  ? "bg-blue-100 text-blue-700"
+                                  : status === "Payment Verified"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-gray-100 text-gray-700" // Default style for "Drafted"
+                            }`}
+                        >
+                          {status}
+                        </span>
+                        {status === "Unpaid" && (
+                          <button onClick={handleProceedPayment} className="mt-3 ml-5 px-3 py-2 text-sm text-white bg-black rounded hover:bg-gray-800">
+                            Proceed Payment
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <button className="text-purple-700 underline">View</button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

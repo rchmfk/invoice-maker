@@ -70,7 +70,7 @@ const ClientProfile: React.FC = () => {
         <div className="mb-4 flex border-b border-gray-200">
           {[
             { tab: "general", Icon: BookOpenIcon },
-            { tab: "password", Icon: LockClosedIcon },
+            // { tab: "password", Icon: LockClosedIcon },
           ].map(({ tab, Icon }) => (
             <button key={tab} className={`flex items-center p-4 text-sm ${activeTab === tab ? "border-b-2 border-gray-900 text-gray-900" : "text-gray-500"}`} onClick={() => setActiveTab(tab as "general" | "password")}>
               <Icon className="mr-2 h-5 w-5" />
