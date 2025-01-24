@@ -54,6 +54,7 @@ export default async function InvoiceAdminPage() {
             <div className="flex flex-col rounded-lg bg-white shadow-[0px_5px_10px_0px_rgba(0,0,0,0.03)] mt-10 gap-2 w-full">
               <InvoiceOption />
               <InvoiceList invoiceDatas={invoiceDatas} />
+              Test
             </div>
           </div>
         </div>

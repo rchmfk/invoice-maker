@@ -1,0 +1,249 @@
+[33mcommit d66965ed872dcf087d3d1d1b9033b06a6f495db7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelopment[m[33m)[m
+Author: FirmanKhoiril <firmankhoiril13@gmail.com>
+Date:   Fri Jan 24 13:38:32 2025 +0700
+
+    display invoice data in admin invoice, delete invoice add own protected route for login and register page
+
+[33mcommit 665ba668aa3616629f3c7fdb4926ba3b20573684[m[33m ([m[1;31morigin/development[m[33m)[m
+Merge: 1651fe0 96b1ebf
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Thu Jan 23 15:22:09 2025 +0700
+
+    Merge pull request #27 from rchmfk/rachma-invoice
+    
+    Rachma invoice
+
+[33mcommit 96b1ebf65fb736bec74432f1bbc440b0e46f5cb5[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Thu Jan 23 15:21:31 2025 +0700
+
+    invoice change
+
+[33mcommit 1145871dffe7a703fc12e78bec1324cc941441be[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Thu Jan 23 15:18:40 2025 +0700
+
+    invoice change
+
+[33mcommit 8a14875576670fc94ac967dd5287f17d608e1c0b[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Thu Jan 23 15:17:04 2025 +0700
+
+    apply paginate on client
+
+[33mcommit 1651fe05bc8a64dfb441930e4893b7640ef44d3f[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Thu Jan 23 15:02:10 2025 +0700
+
+    add select user on edit client
+
+[33mcommit 4a9ae734f77fac4ae76ee61086bada6d9c16d94b[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Thu Jan 23 10:58:53 2025 +0700
+
+    modify logout on sidebar
+
+[33mcommit c843ebe968c03ffbbb02d178b9cbc85124ce9252[m
+Merge: 47d3f5d 5657a62
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Thu Jan 23 08:52:48 2025 +0700
+
+    Merge pull request #26 from rchmfk/rachma-layout
+    
+    fixing if general data is empty
+
+[33mcommit 47d3f5d9b0c7512c716b055896c01ee0f95bd7e1[m
+Merge: 1b1af5d c466dd5
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Wed Jan 22 20:27:10 2025 +0700
+
+    Merge pull request #25 from rchmfk/firman-fixing
+    
+    fixing client dashboard design, adding additional images for it, make…
+
+[33mcommit c466dd5a0402a145da248f79275f02418dff4d13[m[33m ([m[1;31morigin/firman-fixing[m[33m, [m[1;32mfirman-fixing[m[33m)[m
+Author: FirmanKhoiril <firmankhoiril13@gmail.com>
+Date:   Wed Jan 22 20:22:32 2025 +0700
+
+    fixing client dashboard design, adding additional images for it, make logout button in sidebar client and sidebar admin works
+
+[33mcommit 5657a62e9c606dba3b19512a6237a92350e4ae92[m
+Author: Rachma Fauziah <rachma@Rachmas-MacBook-Air.local>
+Date:   Wed Jan 22 19:32:48 2025 +0700
+
+    fixing if general data is empty
+
+[33mcommit 5e24f879ca7d8b58e3a69a4c0e4f74a25a84dcda[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Wed Jan 22 16:12:11 2025 +0700
+
+    update template
+
+[33mcommit 1b1af5dcddb60d8f4bed38469f55cb32acf51cd3[m
+Merge: 74aac26 6b81e16
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Wed Jan 22 14:29:12 2025 +0700
+
+    Merge pull request #24 from rchmfk/rachma-admin-dashboard
+    
+    modify dashboard admin
+
+[33mcommit 6b81e162878177c275c74ce9ad9e76f692d82c1b[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Wed Jan 22 14:14:27 2025 +0700
+
+    modify dashboard admin
+
+[33mcommit 74aac2628c3b49d09634c893297e795126b7fb7c[m
+Merge: 96af95c d32fdc3
+Author: Firman Khoiril Rohmatullah <96419393+FirmanKhoiril@users.noreply.github.com>
+Date:   Wed Jan 22 14:09:25 2025 +0700
+
+    Merge pull request #23 from rchmfk/firman-invoice
+    
+    fixing download pdf
+
+[33mcommit d32fdc36ef43f38b51b699f7acc035bc712d48bd[m[33m ([m[1;31morigin/firman-invoice[m[33m, [m[1;32mfirman-invoice[m[33m)[m
+Author: FirmanKhoiril <firmankhoiril13@gmail.com>
+Date:   Wed Jan 22 14:07:26 2025 +0700
+
+    fixing download pdf
+
+[33mcommit 96af95caf580923fecae0a4697bfe3a8df4b28ec[m
+Merge: eb76387 72ffb90
+Author: Firman Khoiril Rohmatullah <96419393+FirmanKhoiril@users.noreply.github.com>
+Date:   Wed Jan 22 13:35:35 2025 +0700
+
+    Merge pull request #22 from rchmfk/firman-invoice
+    
+    invoice canvas pdf & and client not connected
+
+[33mcommit 72ffb90e1cfdca684226b8c961328bd801563dab[m
+Merge: e21d65d eb76387
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Wed Jan 22 13:35:15 2025 +0700
+
+    Merge branch 'development' into firman-invoice
+
+[33mcommit eb7638798111de1892b7fcef7a82b213fa2f3ef8[m
+Merge: 3a88852 0405320
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Wed Jan 22 13:12:40 2025 +0700
+
+    Merge pull request #21 from rchmfk/rachma-admin-client
+    
+    connect to firestore
+
+[33mcommit 040532081543755cc71d4f676fd1eda9e1731be0[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Wed Jan 22 13:07:37 2025 +0700
+
+    connect to firestore
+
+[33mcommit e21d65d19006f54ce74959337569d96e978326da[m
+Author: FirmanKhoiril <firmankhoiril13@gmail.com>
+Date:   Wed Jan 22 12:54:50 2025 +0700
+
+    invoice canvas pdf & and client not connected
+
+[33mcommit 3a88852b87d608178c78434220eafb68ede9dd50[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Tue Jan 21 15:17:21 2025 +0700
+
+    rachma - crud admin profile
+
+[33mcommit 65420949920c6748bd0851dabeb26b390444f577[m
+Merge: 62a66db 0ddc20e
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Tue Jan 21 13:35:53 2025 +0700
+
+    Merge pull request #20 from rchmfk/oscar-client
+    
+    using heroicons
+
+[33mcommit 0ddc20eac71f831ce09348cc6a99740e328d2878[m
+Author: oscaroraplean8 <oscaroraplean@icloud.com>
+Date:   Tue Jan 21 13:09:09 2025 +0700
+
+    using heroicons
+
+[33mcommit 62a66dbb7e5eb19a5868b09d1e3296f2124db20e[m
+Merge: 7fd44ef 0e81bb0
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Tue Jan 21 12:36:11 2025 +0700
+
+    Merge pull request #19 from rchmfk/rachma-landing
+    
+    Rachma landing
+
+[33mcommit 0e81bb06566f4eccce029c2567301cb9aa0f10fd[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Tue Jan 21 12:33:31 2025 +0700
+
+    CRUD admin->client
+
+[33mcommit 7fd44ef3f11004b87566fb9fd5f80fe67c83e1b7[m
+Merge: 80d857d 6161502
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Tue Jan 21 12:32:48 2025 +0700
+
+    Merge pull request #18 from rchmfk/oscar-client
+    
+    all client
+
+[33mcommit 61615022840388cb759128030a57d5fc646885c3[m
+Author: oscaroraplean8 <oscaroraplean@icloud.com>
+Date:   Tue Jan 21 11:02:31 2025 +0700
+
+    all client
+
+[33mcommit 7f35f6ff6f27e7092f2d54404888acdd7411d272[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Tue Jan 21 10:47:56 2025 +0700
+
+    CRUD user to firestore
+
+[33mcommit 12c13e3cad8dccf6b3d24c2a2d7c028cd36db41a[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Tue Jan 21 10:46:15 2025 +0700
+
+    CRUD user to firestore
+
+[33mcommit 25b2607d4d083610fa7afc2d439ace75e9ff3fc4[m
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Tue Jan 21 08:41:54 2025 +0700
+
+    modify landing
+
+[33mcommit b13f9e83af7d3bca8b784a25ea2ceae7b161bb75[m
+Merge: 48f79ba 80d857d
+Author: RachmaFauziah Krismayanti <rachmafrau@gmail.com>
+Date:   Tue Jan 21 08:37:40 2025 +0700
+
+    Merge branch 'development' of https://github.com/rchmfk/invoice-maker into rachma-landing
+
+[33mcommit 80d857d8c9143d0c5d347ff469696c0b56aa619c[m
+Merge: b4cbd0f e75a27b
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Mon Jan 20 21:33:38 2025 +0700
+
+    Merge pull request #17 from rchmfk/rachma-layout
+    
+    landing
+
+[33mcommit e75a27b19cb830fe3d489775f1947e238bac2b55[m
+Author: Rachma Fauziah <rachma@Rachmas-MacBook-Air.local>
+Date:   Mon Jan 20 21:31:13 2025 +0700
+
+    landing
+
+[33mcommit b4cbd0f2e99d8098823914a4bc7b0205c27d4b41[m
+Merge: 2c6b540 f3b5aa7
+Author: Rachma Fauziah Krismayanti <39545672+rchmfk@users.noreply.github.com>
+Date:   Mon Jan 20 19:45:38 2025 +0700
+
+    Merge pull request #16 from rchmfk/rachma-layout
+    
+    Rachma layout
+
+[33mcommit f3b5aa71572a89
