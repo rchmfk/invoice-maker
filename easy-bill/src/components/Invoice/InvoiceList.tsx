@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useOutsideClick } from "@/hooks/useOutsideClickEvent";
-import { invoiceData } from "@/public/DummtData";
 import {
   formatBackgroundPayment,
   formatInvoiceId,
@@ -15,25 +14,26 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import ModalDeleteInvoiceAdmin from "../modal/ModalDeleteInvoiceAdmin";
+import useDeleteInvoice from "@/hooks/useDeleteInvoice";
+import { InvoiceJSON } from "@/typescript/entities/Invoice";
 
-const InvoiceList = () => {
+const InvoiceList = ({ invoiceDatas }: any) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [showOptions, setShowOptions] = useState<number | null>(null);
-  const [invoices, setInvoices] = useState(invoiceData);
   const [showDeleteInvoiceModal, setShowDeleteInvoiceModal] = useState(false);
-  const [invoiceId, setInvoiceId] = useState<number | null>(null)
+  const [invoiceId, setInvoiceId] = useState<string | null>(null)
   const showOptionsRef = useOutsideClick(() => setShowOptions(null));
 
   const paymentProcess = searchParams.get("paymentProcess") || "";
   const salesPerson = searchParams.get("salesPerson") || "";
   const client = searchParams.get("client") || "";
 
-  const filteredInvoices = invoices.filter((invoice) => {
+  const filteredInvoices = invoiceDatas.filter((invoice: InvoiceJSON) => {
     const matchesPaymentProcess =
       !paymentProcess ||
       paymentProcess === "All" ||
-      invoice.paymentProcess.toLowerCase() === paymentProcess.toLowerCase();
+      invoice.paymentProof.toLowerCase() === paymentProcess.toLowerCase();
     const matchesSalesPerson =
       !salesPerson ||
       invoice.salesPerson.toLowerCase().includes(salesPerson.toLowerCase());
@@ -49,15 +49,14 @@ const InvoiceList = () => {
     setShowOptions(showOptions === index ? null : index);
   };
 
-  const handleEditInvoice = (invoiceId: number) => {
+  const handleEditInvoice = (invoiceId: string) => {
     router.push(`/admin/update-invoice/${invoiceId}`)
   };
 
-  const handleDeleteInvoice = (invoiceId: number) => {
+  const handleDeleteInvoice = async (invoiceId: string) => {
     if(invoiceId !== null) {
-      setInvoices((prevInvoices) =>
-        prevInvoices.filter((invoice) => invoice.invoiceId !== invoiceId)
-      );
+      await useDeleteInvoice(invoiceId)
+      router.refresh()
       setShowOptions(null);
     }
   };
@@ -87,14 +86,14 @@ const InvoiceList = () => {
               <button>Document</button>
             </div>
           </div>
-          {filteredInvoices.length === 0 ? (
+          {filteredInvoices?.length === 0 ? (
             <div className="flex justify-center items-center h-64">
               No invoices found. Please adjust your filters.
             </div>
           ) : (
-            filteredInvoices.map((invoice, index) => {
+            filteredInvoices?.map((invoice: InvoiceJSON, index: number) => {
               const paymentBackground = formatBackgroundPayment(
-                invoice.paymentProcess)
+                invoice.paymentProof)
               return (
                 (
                   <div
@@ -106,7 +105,7 @@ const InvoiceList = () => {
                       <div>{index + 1}</div>
                     </div>
                     <div className="col-span-2">
-                      {formatInvoiceId(invoice.invoiceId)}
+                      {formatInvoiceId(index + 1)}
                     </div>
                     <div className="col-span-2">{invoice.client}</div>
                     <div className="col-span-2">{formatNumber(invoice.total)}</div>
@@ -115,7 +114,7 @@ const InvoiceList = () => {
                       <p
                         className={`capitalize tracking-wide text-sm rounded-lg px-2 ${paymentBackground}  py-1`}
                       >
-                        {invoice.paymentProcess}
+                        {invoice.paymentProof}
                       </p>
                     </div>
                     <div className="flex justify-around items-center col-span-2">
@@ -132,7 +131,7 @@ const InvoiceList = () => {
                         >
                           <button
                             className="px-4 py-2 flex items-center gap-2 w-full text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg"
-                            onClick={() => handleEditInvoice(invoice.invoiceId)}
+                            onClick={() => handleEditInvoice(invoice.id)}
                           >
                             <PencilIcon className="size-4" />
                             <span>Edit</span>
@@ -141,7 +140,7 @@ const InvoiceList = () => {
                             className="px-4 w-full py-2 flex items-center gap-2 text-sm text-red-500 hover:bg-gray-100"
                             onClick={() => {
                               setShowDeleteInvoiceModal(prev => !prev)
-                              setInvoiceId(invoice.invoiceId)
+                              setInvoiceId(invoice.id)
                             }}
                           >
                             <TrashIcon className="size-4" />

@@ -59,19 +59,23 @@ const UserManagement: React.FC = () => {
   const fetchUsers = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
-      const usersList: User[] = [];
+      const emailMap = new Map<string, User>(); // Map to track unique emails
+  
       querySnapshot.forEach((doc) => {
-        usersList.push({
-          id: doc.id,
-          ...doc.data(),
-        });
+        const userData = { id: doc.id, ...doc.data() } as any;
+  
+        if (!emailMap.has(userData.email)) {
+          emailMap.set(userData.email, userData);
+        }
       });
+
+      const usersList = Array.from(emailMap.values());
       setUsers(usersList);
     } catch (error) {
       console.error("Error fetching users: ", error);
     }
   };
-
+  
   useEffect(() => {
     fetchUsers();
   }, []);

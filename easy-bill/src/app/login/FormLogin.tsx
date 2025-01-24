@@ -9,14 +9,11 @@ import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Google from "@/public/google.png";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db, signinWithGoogle } from "@/services/firebase";
+import { auth, signinWithGoogle } from "@/services/firebase";
 import { useRouter } from "next/navigation";
 import { useAddUser } from "@/hooks/useAddUser";
-import { useProtectedRoute } from "@/hooks/useProtectedRoute";
-import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const FormLogin = () => {
-  // useProtectedRoute("Client");
   const router = useRouter();
 
   const {
@@ -49,11 +46,15 @@ const FormLogin = () => {
 
   const loginGoogle = () => {
     signinWithGoogle()
-      .then(async (result) => {
-        const user = result.user;
-        const userId = user.uid;
-        const userRef = doc(db, "users", userId);
-        const userDoc = await getDoc(userRef);
+      .then((result) => {
+        const userData = {
+          name: result.user.displayName,
+          email: result.user.email,
+          userId: result.user.uid,
+          phoneNumber: result.user.phoneNumber,
+          address: "",
+          role: "Admin",
+        };
 
         if (userDoc.exists()) {
           const userData = userDoc.data();

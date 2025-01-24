@@ -27,7 +27,6 @@ export const useProtectedRoute = (requiredRole: "Client" | "Admin") => {
 
         if (!querySnapshot.empty) {
           const userData = querySnapshot.docs[0].data()
-          console.log('User data:', userData);
 
           if (!userData || userData.role !== requiredRole) {
             const redirectPath = userData?.role === 'Admin' ? '/admin' : '/client';

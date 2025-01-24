@@ -12,11 +12,12 @@ import { auth, signinWithGoogle } from "@/services/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Google from "@/public/google.png";
-import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 const FormRegister = () => {
   const router = useRouter();
-  // useProtectedRoute("Client");
+<<<<<<< HEAD:easy-bill/src/app/(auth)/register/FormRegister.tsx
+=======
+>>>>>>> 6985047ef31afb2eaa21543ae5c0aca95693bbf2:easy-bill/src/app/register/FormRegister.tsx
   const {
     register,
     handleSubmit,
