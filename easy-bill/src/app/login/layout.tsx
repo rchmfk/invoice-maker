@@ -1,5 +1,4 @@
 import ClientRouteGuard from "@/components/ClientRouteGuard";
-import SidebarClient from "@/components/SidebarClient";
 import { ReactNode } from "react";
 
 const LoginLayout = ({ children }: { children: ReactNode }) => {

@@ -8,7 +8,6 @@ import {
 import { styles } from "./InvoiceCanvasPDFStyle";
 
 const InvoiceCanvasPDF = ({
-  invoiceData,
   head,
   client,
   payment,

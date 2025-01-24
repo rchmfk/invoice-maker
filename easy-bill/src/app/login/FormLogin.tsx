@@ -27,11 +27,11 @@ const FormLogin = () => {
 
   const loginSubmit: SubmitHandler<FormLoginFields> = async (data) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
+      // const userCredential = await signInWithEmailAndPassword(
+      //   auth,
+      //   data.email,
+      //   data.password
+      // );
 
       // add something later on
 

@@ -1,6 +1,5 @@
 "use client";
 import {
-  InputFieldKey,
   InvoiceFormValues,
   invoiceSchema,
 } from "@/typescript/entities/FormInvoice";
@@ -28,7 +27,6 @@ import {
 } from "./template";
 import { useRouter, useSearchParams } from "next/navigation";
 import useCreateInvoice from "@/hooks/useCreateInvoice";
-import { useInvoiceStore } from "@/store/useInvoiceStore";
 import { inputFields } from "@/public/DummtData";
 
 const FormInvoice = () => {
@@ -39,7 +37,6 @@ const FormInvoice = () => {
   const clientInfoValue = searchParams.get("client");
   const tableValue = searchParams.get("table");
   const paymentInfoValue = searchParams.get("payment");
-  const { setInvoiceData, invoiceData } = useInvoiceStore((state) => state);
 
   const {
     control,

@@ -4,7 +4,6 @@ import { InvoiceData } from "@/store/useInvoiceStore";
 import Image from "next/image";
 
 const InvoiceCanvasClient = ({
-  invoiceData,
   head,
   client,
   payment,
