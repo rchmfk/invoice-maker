@@ -9,10 +9,11 @@ import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Google from "@/public/google.png";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, signinWithGoogle } from "@/services/firebase";
+import { auth, db, signinWithGoogle } from "@/services/firebase";
 import { useRouter } from "next/navigation";
 import { useAddUser } from "@/hooks/useAddUser";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const FormLogin = () => {
   useProtectedRoute("Client");
@@ -29,37 +30,66 @@ const FormLogin = () => {
 
   const loginSubmit: SubmitHandler<FormLoginFields> = async (data) => {
     try {
+      // First, try to sign in with email and password
       const userCredential = await signInWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
-
-      // add something later on
-
-      router.push("/");
+  
+      const user = userCredential.user;
+      const userId = user.uid;
+  
+      // Check Firestore to see if the user exists with the given userId
+      const userRef = doc(db, "users", userId);
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        // User exists, proceed with login and routing
+        const userData = userDoc.data();
+        console.log("User found in Firestore:", userData);
+        
+        // Optionally, you can add additional checks here (e.g., user role, status)
+        router.push("/"); // Redirect to the homepage or dashboard
+      } else {
+        // User doesn't exist in Firestore, handle the error (e.g., show a message or create a new user)
+        console.log("User not found in Firestore.");
+        // You can display a message or take action accordingly, like logging the user out
+      }
     } catch (error) {
-      console?.error(`Error: ${error}`);
+      console.error(`Error: ${error}`);
     }
   };
 
   const loginGoogle = () => {
     signinWithGoogle()
-      .then((result) => {
-        const userData = {
-          name: result.user.displayName,
-          email: result.user.email,
-          userId: result.user.uid,
-          phoneNumber: result.user.phoneNumber,
-          address: "",
-          role: "Client",
-        };
+      .then(async (result) => {
+        const user = result.user;
+        const userId = user.uid;
+        const userRef = doc(db, "users", userId);
+        const userDoc = await getDoc(userRef);
 
-        useAddUser(userData);
-        // router.push("/")
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          console.log("User found in Firestore:", userData);
+          router.push("/");
+        } else {
+          const newUser = {
+            name: user.displayName,
+            email: user.email,
+            userId: user.uid,
+            phoneNumber: user.phoneNumber || "",
+            address: "",
+            role: "Client",
+          };
+
+          await setDoc(userRef, newUser);
+
+          router.push("/client");
+        }
       })
       .catch((error) => {
-        console.error(`Error: ${error.message}`);
+        console.error(`Error during Google sign-in: ${error.message}`);
       });
   };
 
@@ -73,67 +103,43 @@ const FormLogin = () => {
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit(loginSubmit)}
-        className="flex flex-col space-y-4 mt-4"
-      >
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="name">Your Name</label>
-          <input
-            type="text"
-            id="name"
-            placeholder="John"
-            className="py-2 px-4 border border-black/20 rounded-md"
-            {...register("name")}
-          />
+      <form onSubmit={handleSubmit(loginSubmit)} className="space-y-4 md:space-y-6" action="#">
+        {/* <div>
+          <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+            Name</label>
+          <input type="text" id="name"
+            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="John" {...register("name")} />
           {errors.name && (
             <div className="text-red-500 text-sm">{errors.name.message}</div>
           )}
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="email">Your Email</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="example@gmail.com"
-            className="py-2 px-4 border border-black/20 rounded-md"
-            {...register("email")}
-          />
+        </div> */}
+        <div>
+          <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+            email</label>
+          <input type="email" id="email"
+            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="name@company.com" {...register("email")} />
           {errors.email && (
             <div className="text-red-500 text-sm">{errors.email.message}</div>
           )}
         </div>
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="password">Your Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="*********"
-            className="py-2 px-4 border border-black/20 rounded-md"
-            {...register("password")}
-          />
+        <div>
+          <label htmlFor="password"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+          <input type="password" id="password" placeholder="••••••••"
+            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            {...register("password")} />
           {errors.password && (
             <div className="text-red-500 text-sm">
               {errors.password.message}
             </div>
           )}
         </div>
-        <div className="flex gap-4 items-center">
-          <button
-            type="button"
-            className="bg-blue-50 max-w-[100px] w-full rounded-md hover:bg-blue-100 transition text-blue-800 hover:text-blue-900 py-2"
-            onClick={handleClearForm}
-          >
-            Clear
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="bg-blue-800 max-w-[100px] w-full rounded-md hover:bg-blue-900 transition text-blue-50 hover:text-blue-100 py-2"
-          >
-            {isSubmitting ? "Loading..." : "Login"}
-          </button>
-        </div>
+        <button disabled={isSubmitting} type="submit"
+          className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+          {isSubmitting ? "Loading..." : "Login"}
+        </button>
         <div className="flex flex-col items-center justify-center my-2">
           <div className="w-full relative flex items-center justify-center">
             <p className="text-center bg-white p-2 z-10 static text-gray-600">
