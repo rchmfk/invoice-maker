@@ -16,7 +16,7 @@ import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 const FormRegister = () => {
   const router = useRouter();
-  useProtectedRoute("Client");
+  // useProtectedRoute("Client");
   const {
     register,
     handleSubmit,
