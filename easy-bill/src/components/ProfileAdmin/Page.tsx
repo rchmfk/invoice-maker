@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from '@/services/firebase';
-import { BanknotesIcon, IdentificationIcon, LockClosedIcon, PhoneIcon, UserCircleIcon } from "@heroicons/react/20/solid";
+import { BanknotesIcon, IdentificationIcon, LockClosedIcon, PaperClipIcon, PhoneIcon, UserCircleIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 
 // Modal component
@@ -233,109 +233,165 @@ const ProfileAdmin = () => {
 
         {activeTab === "general" && (
           <div>
-            <h3 className="text-lg font-semibold">General Information</h3>
             {adminData.length === 0 ? (
               <div>
-                <p>No data available.</p>
-                <button
-                  onClick={() => openModal("general")}
-                  className="mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-300"
-                >
-                  Add Data
-                </button>
-              </div>
-            ) : (
+                <div className="px-4 sm:px-0">
+                  <div className="grid grid-cols-2 items-center">
+                    <div>
+                      <h3 className="text-base/7 font-semibold text-gray-900">General Information</h3>
+                      <p className="mt-1 max-w-2xl text-sm/6 text-gray-500">Personal details</p>
+                    </div>
+                    <div className="text-right">
+                      <span
+                        onClick={() => openModal("general")}
+                        className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset cursor-pointer"
+                      >
+                        Insert Data
+                      </span>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                ) : (
               adminData.map((data) => (
                 <div key={data.id}>
-                  <p>{data.name}</p>
-                  <p>{data.email}</p>
-                  <p>{data.address}</p>
-                  <p>{data.logo}</p>
-                  <button
-                    onClick={() => openModal("general", data)}
-                    className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-700 transition duration-300"
-                  >
-                    Edit
-                  </button>
+                  <div className="px-4 sm:px-0">
+                    <div className="grid grid-cols-2 items-center">
+                      <div>
+                        <h3 className="text-base/7 font-semibold text-gray-900">General Information</h3>
+                        <p className="mt-1 max-w-2xl text-sm/6 text-gray-500">Personal details</p>
+                      </div>
+                      <div className="text-right">
+                        <span
+                          onClick={() => openModal("general", data)}
+                          className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset cursor-pointer"
+                        >
+                          Edit
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-6 border-t border-gray-100">
+                    <dl className="divide-y divide-gray-100">
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm/6 font-medium text-gray-900">Full name</dt>
+                        <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
+                          {data.name}
+                        </dd>
+                      </div>
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm/6 font-medium text-gray-900">Email address</dt>
+                        <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{data.email}</dd>
+                      </div>
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm/6 font-medium text-gray-900">About</dt>
+                        <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
+                          {data.address}
+                        </dd>
+                      </div>
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm/6 font-medium text-gray-900">Logo</dt>
+                        <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                          <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
+                            <li className="flex items-center justify-between py-4 pr-5 pl-4 text-sm/6">
+                              <div className="flex w-0 flex-1 items-center">
+                                <PaperClipIcon aria-hidden="true" className="size-5 shrink-0 text-gray-400" />
+                                <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                                  <span className="truncate font-medium">{data.logo}</span>
+                                  {/* <span className="shrink-0 text-gray-400">2.4mb</span> */}
+                                </div>
+                              </div>
+                              <div className="ml-4 shrink-0">
+                                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                  Download
+                                </a>
+                              </div>
+                            </li>
+                          </ul>
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
                 </div>
-              ))
+
+                ))
+            )}
+              </div>
+            )}
+
+            {activeTab === "bank account" && (
+              <div>
+                <h3 className="text-lg font-semibold">Bank Accounts</h3>
+                {adminAccounts.map((account) => (
+                  <div key={account.id}>
+                    <p>{account.name} - {account.bank} - {account.number}</p>
+                    <button onClick={() => openModal("bankAccount", account)} className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-700 transition duration-300">Edit</button>
+                    <button onClick={() => handleDeleteAdminAccount(account.id)} className="mt-2 px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-700 transition duration-300">Delete</button>
+                  </div>
+                ))}
+                <button onClick={() => openModal("bankAccount")} className="mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-300">Add Bank Account</button>
+              </div>
+            )}
+
+            {activeTab === "contact person" && (
+              <div>
+                <h3 className="text-lg font-semibold">Contact Persons</h3>
+                {contactPersons.map((person) => (
+                  <div key={person.id}>
+                    <p>{person.name} - {person.phoneNumber}</p>
+                    <button onClick={() => openModal("contactPerson", person)} className="mt-2 px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-700 transition duration-300">Edit</button>
+                    <button onClick={() => handleDeleteContactPerson(person.id)} className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700 transition duration-300">Delete</button>
+                  </div>
+                ))}
+                <button onClick={() => openModal("contactPerson")} className="mt-2 px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-700 transition duration-300">Add Contact Person</button>
+              </div>
+            )}
+
+            {activeTab === "sales person" && (
+              <div>
+                <h3 className="text-lg font-semibold">Sales Persons</h3>
+                {salesPersons.map((person) => (
+                  <div key={person.id}>
+                    <p>{person.name}</p>
+                    <button onClick={() => openModal("salesPerson", person)} className="mt-2 px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-700 transition duration-300">Edit</button>
+                    <button onClick={() => handleDeleteSalesPerson(person.id)} className="mt-2 px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-700 transition duration-300">Delete</button>
+                  </div>
+                ))}
+                <button onClick={() => openModal("salesPerson")} className="mt-2 px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-700 transition duration-300">Add Sales Person</button>
+              </div>
+            )}
+
+            {activeTab === "password" && (
+              <div>
+                <h3 className="text-lg font-semibold">Change Password</h3>
+                <p>Here you can change your password.</p>
+              </div>
             )}
           </div>
-        )}
-
-        {activeTab === "bank account" && (
-          <div>
-            <h3 className="text-lg font-semibold">Bank Accounts</h3>
-            {adminAccounts.map((account) => (
-              <div key={account.id}>
-                <p>{account.name} - {account.bank} - {account.number}</p>
-                <button onClick={() => openModal("bankAccount", account)} className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-700 transition duration-300">Edit</button>
-                <button onClick={() => handleDeleteAdminAccount(account.id)} className="mt-2 px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-700 transition duration-300">Delete</button>
-              </div>
-            ))}
-            <button onClick={() => openModal("bankAccount")} className="mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-300">Add Bank Account</button>
-          </div>
-        )}
-
-        {activeTab === "contact person" && (
-          <div>
-            <h3 className="text-lg font-semibold">Contact Persons</h3>
-            {contactPersons.map((person) => (
-              <div key={person.id}>
-                <p>{person.name} - {person.phoneNumber}</p>
-                <button onClick={() => openModal("contactPerson", person)} className="mt-2 px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-700 transition duration-300">Edit</button>
-                <button onClick={() => handleDeleteContactPerson(person.id)} className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700 transition duration-300">Delete</button>
-              </div>
-            ))}
-            <button onClick={() => openModal("contactPerson")} className="mt-2 px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-700 transition duration-300">Add Contact Person</button>
-          </div>
-        )}
-
-        {activeTab === "sales person" && (
-          <div>
-            <h3 className="text-lg font-semibold">Sales Persons</h3>
-            {salesPersons.map((person) => (
-              <div key={person.id}>
-                <p>{person.name}</p>
-                <button onClick={() => openModal("salesPerson", person)} className="mt-2 px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-700 transition duration-300">Edit</button>
-                <button onClick={() => handleDeleteSalesPerson(person.id)} className="mt-2 px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-700 transition duration-300">Delete</button>
-              </div>
-            ))}
-            <button onClick={() => openModal("salesPerson")} className="mt-2 px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-700 transition duration-300">Add Sales Person</button>
-          </div>
-        )}
-
-        {activeTab === "password" && (
-          <div>
-            <h3 className="text-lg font-semibold">Change Password</h3>
-            <p>Here you can change your password.</p>
-          </div>
-        )}
-      </div>
 
       {/* Modal component */}
 
-      {isModalOpen && (
-        <Modal
-          title={`${modalType === "general" ? (editData ? "Edit General" : "Add General") : modalType}`}
-          fields={fields}
-          onSubmit={
-            modalType === "general"
-              ? handleEditAdminData
-              : modalType === "bankAccount"
-                ? editData ? handleEditAdminAccount : handleAddAdminAccount
-                : modalType === "contactPerson"
-                  ? editData ? handleEditContactPerson : handleAddContactPerson
-                  : modalType === "salesPerson"
-                    ? editData ? handleEditSalesPerson : handleAddSalesPerson
-                    : () => { }
-          }
-          onClose={closeModal}
-          initialData={editData}
-        />
-      )}
-    </>
-  );
+        {isModalOpen && (
+          <Modal
+            title={`${modalType === "general" ? (editData ? "Edit General" : "Add General") : modalType}`}
+            fields={fields}
+            onSubmit={
+              modalType === "general"
+                ? handleEditAdminData
+                : modalType === "bankAccount"
+                  ? editData ? handleEditAdminAccount : handleAddAdminAccount
+                  : modalType === "contactPerson"
+                    ? editData ? handleEditContactPerson : handleAddContactPerson
+                    : modalType === "salesPerson"
+                      ? editData ? handleEditSalesPerson : handleAddSalesPerson
+                      : () => { }
+            }
+            onClose={closeModal}
+            initialData={editData}
+          />
+        )}
+      </>
+      );
 };
 
-export default ProfileAdmin;
+      export default ProfileAdmin;

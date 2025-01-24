@@ -6,7 +6,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-    <div className="p-4 sm:ml-64">
+      <div className="p-4 sm:ml-64">
         <div className="p-4 mt-14">
           <div className="mb-4 lg:flex lg:items-center lg:justify-between">
             <div className="min-w-0 flex-1">
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
           </div>
           <div className="flex items-center justify-center mb-4 rounded">
             <div className="flex flex-col rounded-lg bg-white mt-10 gap-2 w-full">
-              <ProfileAdmin/>
+              <ProfileAdmin />
             </div>
           </div>
         </div>
