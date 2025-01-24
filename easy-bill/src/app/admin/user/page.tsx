@@ -13,7 +13,6 @@ import {
   collection,
   getDocs,
   addDoc,
-  updateDoc,
   doc,
   deleteDoc,
   setDoc,
@@ -21,7 +20,9 @@ import {
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 interface User {
-  id: number;
+  address: string;
+  phoneNumber: string;
+  id: string;
   name: string;
   email: string;
   role: string;
@@ -110,7 +111,7 @@ const UserManagement: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handleAddUserSubmit = async (e: FormEvent): void => {
+  const handleAddUserSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
 
     if (popupForm.password !== popupForm.confirmPassword) {
@@ -195,7 +196,7 @@ const UserManagement: React.FC = () => {
     }
   };
 
-  const handleDeleteUser = async (id: string): void => {
+  const handleDeleteUser = async (id: string): Promise<void> => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this user?"
     );

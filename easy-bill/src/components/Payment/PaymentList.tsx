@@ -1,18 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useOutsideClick } from "@/hooks/useOutsideClickEvent";
-import { invoiceData } from "@/public/DummtData";
-import {
-  formatBackgroundPayment,
-  formatInvoiceId,
-  formatNumber,
-} from "@/utils/formating";
-import {
-  EllipsisVerticalIcon,
-  PencilIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 interface Payment {
@@ -24,7 +11,6 @@ interface Payment {
 }
 
 const InvoiceList = () => {
-  const [activeMenu, setActiveMenu] = useState<string>("Payments");
   const [payments, setPayments] = useState<Payment[]>([
     {
       id: 1,

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRightIcon, BookOpenIcon, LockClosedIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon, BookOpenIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
 

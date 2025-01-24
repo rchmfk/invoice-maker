@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { signOut } from "firebase/auth";
 import { auth } from "@/services/firebase";
+import Image from "next/image";
 
 const menuItems = [
   { name: "Dashboard", icon: "home" },
@@ -97,7 +98,6 @@ const SidebarAdmin = () => {
                 </svg>
               </button>
               <a href="/" className="flex ms-2 md:me-24">
-                {/* <img src="" className="h-8 me-3" alt="EasyBill Logo" /> */}
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">
                   EasyBill
                 </span>
@@ -113,7 +113,7 @@ const SidebarAdmin = () => {
                     aria-expanded={openIcon ? "true" : "false"}
                   >
                     <span className="sr-only">Open user menu</span>
-                    <img
+                    <Image
                       className="w-8 h-8 rounded-full"
                       src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                       alt="user photo"

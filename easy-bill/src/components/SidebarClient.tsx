@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 import {
   HomeIcon,
   DocumentTextIcon,
@@ -95,7 +96,6 @@ const SidebarClient = () => {
                 </svg>
               </button>
               <a href="/" className="flex ms-2 md:me-24">
-                {/* <img src="" className="h-8 me-3" alt="EasyBill Logo" /> */}
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">
                   EasyBill
                 </span>
@@ -111,7 +111,7 @@ const SidebarClient = () => {
                     aria-expanded={openIcon ? "true" : "false"}
                   >
                     <span className="sr-only">Open user menu</span>
-                    <img
+                    <Image
                       className="w-8 h-8 rounded-full"
                       src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                       alt="user photo"

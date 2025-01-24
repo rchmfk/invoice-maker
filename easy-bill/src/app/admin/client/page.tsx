@@ -1,6 +1,4 @@
 "use client";
-import ClientList from "@/components/Client/ClientList";
-import ClientOption from "@/components/Client/ClientOption";
 import { ChevronRightIcon, PlusIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
@@ -18,11 +16,6 @@ interface Client {
   phoneNumber: string;
   userId: string;
   nomor: string;
-}
-
-interface User {
-  id: string;
-  name: string;
 }
 
 export default function ClientAdminPage() {

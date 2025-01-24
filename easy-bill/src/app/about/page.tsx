@@ -2,7 +2,6 @@ import { Footer } from "@/components/Landing/Footer";
 import { Navbar } from "@/components/Landing/Navbar";
 import { Container } from "@/components/Landing/Container";
 import { Cta } from "@/components/Landing/Cta";
-import { CalendarDaysIcon, HandRaisedIcon } from "@heroicons/react/24/outline";
 import React from "react";
 const descriptions = [
   {

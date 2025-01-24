@@ -1,5 +1,4 @@
 "use client";
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
@@ -78,11 +77,11 @@ const AdminPage = () => {
           <div className="grid grid-cols-1 gap-4 mb-4 lg:grid-cols-2">
             <div className="p-4 rounded bg-gray-50 ">
               <h2 className="text-base font-semibold mb-2">Balance Statistics</h2>
-              <Bar data={barData} height={200} />
+              <Bar data={barData} height={100} />
             </div>
             <div className="p-4 rounded bg-gray-50 ">
               <h2 className="text-base font-semibold mb-2">Balance Statistics</h2>
-              <Doughnut data={doughnutData} height={200} />
+              <Doughnut data={doughnutData} height={100} />
             </div>
           </div>
           <div className="grid grid-cols-1 gap-4 mb-4 lg:grid-cols-2">

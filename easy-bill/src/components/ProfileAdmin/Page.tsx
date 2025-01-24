@@ -2,8 +2,7 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from '@/services/firebase';
-import { BanknotesIcon, IdentificationIcon, LockClosedIcon, PaperClipIcon, PhoneIcon, UserCircleIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
+import { BanknotesIcon, IdentificationIcon, PaperClipIcon, PhoneIcon, UserCircleIcon } from "@heroicons/react/20/solid";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 // Modal component

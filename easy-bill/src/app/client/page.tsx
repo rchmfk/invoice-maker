@@ -9,7 +9,7 @@ import {
   user2,
   user3,
 } from "@/public";
-import { ChevronRightIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
@@ -283,7 +283,7 @@ const Dashboard: React.FC = () => {
           <p className="text-3xl font-bold mb-4">$34,212.00</p>
           <div className="flex items-center gap-4 mb-4">
             {[...Array(5)].map((_, index) => (
-              <img
+              <Image
                 key={index}
                 src={`/avatars/${index + 1}.png`}
                 alt="Avatar"

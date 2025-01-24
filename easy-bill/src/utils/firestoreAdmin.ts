@@ -1,5 +1,5 @@
 import { db } from "@/services/firebase"; // Make sure to import your Firebase setup
-import { collection, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 // Function to fetch invoice data
 export const getInvoiceData = async (invoiceId: string) => {
